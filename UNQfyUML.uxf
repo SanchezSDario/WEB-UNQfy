@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>50</y>
+      <w>270</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>UNQfy
+--
+artists: List&lt;Artist&gt;
+playlists: List&lt;Playlist&gt;
+--
+addArtist(artistData): void
+addAlbum(artistId, albumData): void
+addTrack(albumId, trackData): void
+getArtistById(artistId): List&lt;Artist&gt;
+getAlbumById(albumId): List&lt;Album&gt;
+getTrackById(trackId): List&lt;Track&gt;
+getTracksMatchingGenres(genre): List&lt;Track&gt;
+getTracksMatchingArtist(artistName): List&lt;Artist&gt;
+createPlaylist(name, genresToInclude, maxDuration): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>340</x>
+      <y>50</y>
+      <w>170</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Artist
+--
+idArtist: Integer
+name: String
+country: String
+albums: List&lt;Album&gt;
+genres: List&lt;String&gt;
+--
+getters
+setters
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>630</x>
+      <y>40</y>
+      <w>160</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>Album
+--
+idAlbum: Integer
+name: String
+year: Integer
+tracks: List&lt;Track&gt;
+genres: List&lt;String&gt;
+composers: List&lt;Artist&gt;
+--
+getters
+setters
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>870</x>
+      <y>50</y>
+      <w>160</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Track
+--
+idTrack: Integer
+name: String
+duration: Integer
+genres: List&lt;String&gt;
+--
+getters
+setters</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>280</y>
+      <w>170</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>Playlist
+--
+name: String //unico
+duration: Integer
+genres: Array&lt;String&gt;
+tracks: List&lt;Tracks&gt;
+--
+getters
+setters
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>160</x>
+      <y>50</y>
+      <w>190</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>170.0;10.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>90</y>
+      <w>200</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>160.0;190.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>500</x>
+      <y>40</y>
+      <w>150</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>130.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>770</x>
+      <y>50</y>
+      <w>120</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>470</x>
+      <y>180</y>
+      <w>420</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>400.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>500</x>
+      <y>50</y>
+      <w>150</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1..n</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;90.0</additional_attributes>
+  </element>
+</diagram>
