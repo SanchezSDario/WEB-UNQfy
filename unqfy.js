@@ -8,6 +8,11 @@ const Playlist = require('./playlist.js');
 
 class UNQfy {
 
+  constructor(){
+    this.artists = []
+    this.playlists = []
+  }
+
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
   //   artistData.country (string)
@@ -18,6 +23,7 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
+    
   }
 
 

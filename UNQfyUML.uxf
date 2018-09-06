@@ -30,7 +30,7 @@ createPlaylist(name, genresToInclude, maxDuration): void</panel_attributes>
     <coordinates>
       <x>340</x>
       <y>50</y>
-      <w>170</w>
+      <w>180</w>
       <h>150</h>
     </coordinates>
     <panel_attributes>Artist
@@ -39,10 +39,10 @@ idArtist: Integer
 name: String
 country: String
 albums: List&lt;Album&gt;
-genres: List&lt;String&gt;
 --
 getters
 setters
+getGenres: List&lt;String&gt;
 
 </panel_attributes>
     <additional_attributes/>
@@ -52,7 +52,7 @@ setters
     <coordinates>
       <x>630</x>
       <y>40</y>
-      <w>160</w>
+      <w>180</w>
       <h>170</h>
     </coordinates>
     <panel_attributes>Album
@@ -61,11 +61,11 @@ idAlbum: Integer
 name: String
 year: Integer
 tracks: List&lt;Track&gt;
-genres: List&lt;String&gt;
 composers: List&lt;Artist&gt;
 --
 getters
 setters
+getGenres: List&lt;String&gt;
 
 </panel_attributes>
     <additional_attributes/>
@@ -94,19 +94,18 @@ setters</panel_attributes>
     <coordinates>
       <x>330</x>
       <y>280</y>
-      <w>170</w>
+      <w>190</w>
       <h>130</h>
     </coordinates>
     <panel_attributes>Playlist
 --
 name: String //unico
 duration: Integer
-genres: Array&lt;String&gt;
 tracks: List&lt;Tracks&gt;
 --
 getters
 setters
-
+getGenres: Array&lt;String&gt;
 </panel_attributes>
     <additional_attributes/>
   </element>
@@ -137,14 +136,14 @@ m1=0..n</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>500</x>
+      <x>510</x>
       <y>40</y>
-      <w>150</w>
+      <w>140</w>
       <h>110</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=0..n</panel_attributes>
-    <additional_attributes>130.0;10.0;10.0;90.0</additional_attributes>
+    <additional_attributes>120.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -161,25 +160,25 @@ m1=0..n</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>470</x>
+      <x>480</x>
       <y>180</y>
-      <w>420</w>
-      <h>200</h>
+      <w>410</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-m1=0..n</panel_attributes>
-    <additional_attributes>400.0;10.0;10.0;180.0</additional_attributes>
+m1=1..n</panel_attributes>
+    <additional_attributes>390.0;10.0;10.0;160.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>500</x>
+      <x>510</x>
       <y>50</y>
-      <w>150</w>
+      <w>140</w>
       <h>110</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=1..n</panel_attributes>
-    <additional_attributes>10.0;10.0;130.0;90.0</additional_attributes>
+    <additional_attributes>10.0;10.0;120.0;90.0</additional_attributes>
   </element>
 </diagram>

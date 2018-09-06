@@ -1,10 +1,9 @@
 class Album{
-    constructor(_idAlbum, _name, _year, _tracks, _genres, _composers){
+    constructor(_idAlbum, _name, _year, _tracks, _composers){
         this.idAlbum = _idAlbum;
         this.name = _name;
         this.year = _year;
         this.tracks = _tracks;
-        this.genres = _genres;
         this.composers = _composers;
     }
 
@@ -22,10 +21,6 @@ class Album{
 
     getTracks(){
         return this.tracks;
-    }
-
-    getGenres(){
-        return this.genres;
     }
 
     getComposers(){
@@ -48,13 +43,13 @@ class Album{
         this.tracks = tracks;
     }
 
-    setGenres(genres){
-        this.genres = genres;
-    }
-
     setComposers(composers){
         this.composers = composers;
     }
+
+    // Retorna los generos del album, que son todos los generos de sus tracks
+    //getGenres(){}
+
 }
 
 module.exports = Album;

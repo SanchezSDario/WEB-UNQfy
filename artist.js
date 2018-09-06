@@ -1,10 +1,9 @@
 class Artist{
-    constructor(_idArtist, _name, _country, _albums, _genres){
+    constructor(_idArtist, _name, _country, _albums){
         this.idArtist = _idArtist;
         this.name = _name;
         this.country = _country;
         this.albums = _albums;
-        this.genres = _genres;
     }
 
     getId(){ 
@@ -23,10 +22,6 @@ class Artist{
         return this.albums;
     }
 
-    getGenres(){
-        return this.genres;
-    }
-
     setId(id){
         this.idArtist = id;
     }
@@ -43,9 +38,8 @@ class Artist{
         this.albums = albums;
     }
 
-    setGenres(genres){
-        this.genres = genres;
-    }
+    // Retorna los generos del artista, que son todos los generos de sus albums
+    //getGenres(){}
 }
 
 module.exports = Artist;
