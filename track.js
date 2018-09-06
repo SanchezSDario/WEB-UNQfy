@@ -38,3 +38,5 @@ class Track{
         this.genres = genres;
     }
 }
+
+module.exports = Track;

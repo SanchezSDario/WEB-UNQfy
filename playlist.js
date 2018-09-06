@@ -38,3 +38,5 @@ class Playlist{
         this.tracks = tracks;
     }
 }
+
+module.exports = Playlist;

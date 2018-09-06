@@ -56,3 +56,5 @@ class Album{
         this.composers = composers;
     }
 }
+
+module.exports = Album;

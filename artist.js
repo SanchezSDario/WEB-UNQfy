@@ -47,3 +47,5 @@ class Artist{
         this.genres = genres;
     }
 }
+
+module.exports = Artist;
