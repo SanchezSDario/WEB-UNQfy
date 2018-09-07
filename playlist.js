@@ -1,8 +1,8 @@
 class Playlist{
-    constructor(_name, _duration, _tracks){
+    constructor(_name, _genres, _duration){
         this.name = _name;
+        this.genres = _genres;
         this.duration = _duration;
-        this.tracks = _tracks;
     }
 
     getName(){
@@ -17,6 +17,11 @@ class Playlist{
         return this.tracks;
     }
 
+    // Retorna los generos de la playlist
+    getGenres(){
+        return this.genres;
+    }
+
     setName(name){
         this.name = name;
     }
@@ -28,9 +33,6 @@ class Playlist{
     setTracks(tracks){
         this.tracks = tracks;
     }
-
-    // Retorna los generos de la playlist, que son todos los generos de sus tracks
-    //getGenres(){}
 }
 
 module.exports = Playlist;

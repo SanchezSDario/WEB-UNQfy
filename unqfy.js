@@ -38,7 +38,7 @@ class UNQfy {
      //       console.log(this.artists);
             return artistToAdd;
         } else {
-            throw "El artista ya esta incluido";
+            throw new Error("El artista ya esta incluido");
         }
   }     
 
@@ -53,22 +53,8 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-  let albumToAdd = new Album(this.generateID(), albumData.name, albumData.year);
-  //console.log(albumToAdd); 
-  if(posibleAddAlbum(artistId , albumToAdd.getId)){
-        this.getArtistById.getAlbums.push(albumToAdd);
+    return this.getArtistById(artistId).addAlbum(this.generateID(), albumData)
   } 
-  else { 
-    throw ("El artista no existe o el artista ya contiene este album");
-  }
-  
-} 
-
-posibleAddAlbum (artistId , idAlbum){
-  return !this.getArtistById.getAlbums.map((a)=>a.getId).includes(idAlbum); 
-  
-}
-
 
   // trackData: objeto JS con los datos necesarios para crear un track
   //   trackData.name (string)
@@ -85,15 +71,11 @@ posibleAddAlbum (artistId , idAlbum){
   }
 
   getArtistById(id) { 
-     
-    try{ 
-      this.artists.find((a)=>a.getId===id);
+    let artist = this.artists.find((a)=>a.getId()===id);
+    if(artist === undefined){
+      throw new Error("El artista no existe");
     }
-    catch(error){
-      console.log(error("el artista no existe"));
-    }
-
-    
+    else{return artist;}
   }
 
   getAlbumById(id) {

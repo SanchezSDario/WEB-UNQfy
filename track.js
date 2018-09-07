@@ -1,13 +1,13 @@
 class Track{
-    constructor(_idTrack, _name, _duration, _genres){
-        this.idTrack = _idTrack;
+    constructor(_id, _name, _duration, _genres=[]){
+        this.id = _id;
         this.name = _name;
         this.duration = _duration;
         this.genres = _genres;
     }
 
     getId(){
-        return this.idTrack;
+        return this.id;
     }
 
     getName(){
@@ -23,7 +23,7 @@ class Track{
     }
 
     setId(id){
-        this.idTrack = id;
+        this.id = id;
     }
 
     setName(name){

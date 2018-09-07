@@ -1,14 +1,16 @@
+const Track = require('./track.js');
+
 class Album{
-    constructor(_idAlbum, _name, _year, _tracks, _composers){
-        this.idAlbum = _idAlbum;
+    constructor(_id, _name, _year){
+        this.id = _id;
         this.name = _name;
         this.year = _year;
-        this.tracks = _tracks;
-        this.composers = _composers;
+        this.tracks = [];
+        this.composers = [];
     }
 
     getId(){
-        return this.idAlbum;
+        return this.id;
     }
 
     getName(){
@@ -28,7 +30,7 @@ class Album{
     }
 
     setId(id){
-        this.idAlbum = id;
+        this.id = id;
     }
 
     setName(name){
