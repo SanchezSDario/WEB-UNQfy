@@ -23,8 +23,20 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
-    
+  
+  //Se puso el ID por default hasta definir como lo vamos a generar
+  let artistToAdd = new Artist(1, artistData.name, artistData.country);
+  console.log(artistToAdd);
+  
+    if(!this.artists.includes(artistToAdd)){
+            this.artists.push(artistToAdd);
+            console.log(this.artists);
+            return artistToAdd;
+        } else {
+            throw "El artista ya esta incluido";
+        }
   }
+     
 
 
   // albumData: objeto JS con los datos necesarios para crear un album
