@@ -11,6 +11,11 @@ class UNQfy {
   constructor(){
     this.artists = []
     this.playlists = []
+    this.numId = 1;
+  }
+  
+  generateID(){
+    return this.numId++;
   }
 
   // artistData: objeto JS con los datos necesarios para crear un artista
@@ -25,18 +30,17 @@ class UNQfy {
   */
   
   //Se puso el ID por default hasta definir como lo vamos a generar
-  let artistToAdd = new Artist(1, artistData.name, artistData.country);
-  console.log(artistToAdd);
+  let artistToAdd = new Artist(this.generateID(), artistData.name, artistData.country);
+  //console.log(artistToAdd);
   
     if(!this.artists.includes(artistToAdd)){
             this.artists.push(artistToAdd);
-            console.log(this.artists);
+     //       console.log(this.artists);
             return artistToAdd;
         } else {
             throw "El artista ya esta incluido";
         }
-  }
-     
+  }     
 
 
   // albumData: objeto JS con los datos necesarios para crear un album
@@ -49,6 +53,9 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
+  let albumToAdd = new Album(this.generateID(), albumData.name, albumData.year);
+  //console.log(albumToAdd);
+  
   }
 
 
