@@ -54,9 +54,20 @@ class UNQfy {
      - una propiedad year (number)
   */
   let albumToAdd = new Album(this.generateID(), albumData.name, albumData.year);
-  //console.log(albumToAdd);
-  
+  //console.log(albumToAdd); 
+  if(posibleAddAlbum(artistId , albumToAdd.getId)){
+        this.getArtistById.getAlbums.push(albumToAdd);
+  } 
+  else { 
+    throw ("El artista no existe o el artista ya contiene este album");
   }
+  
+} 
+
+posibleAddAlbum (artistId , idAlbum){
+  return !this.getArtistById.getAlbums.map((a)=>a.getId).includes(idAlbum); 
+  
+}
 
 
   // trackData: objeto JS con los datos necesarios para crear un track
@@ -73,8 +84,16 @@ class UNQfy {
   */
   }
 
-  getArtistById(id) {
+  getArtistById(id) { 
+     
+    try{ 
+      this.artists.find((a)=>a.getId===id);
+    }
+    catch(error){
+      console.log(error("el artista no existe"));
+    }
 
+    
   }
 
   getAlbumById(id) {
