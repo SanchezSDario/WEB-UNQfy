@@ -52,6 +52,24 @@ class Album{
     // Retorna los generos del album, que son todos los generos de sus tracks
     //getGenres(){}
 
+
+    // Agrega un track al album, si el id del track ya estaba en el album lanza una excepcion,
+    // de lo contrario crea un track, lo agrega al album y lo retorna
+    addTrack(trackId, trackData){
+        if(! hasTrack(trackId)){
+            let track = new Track(trackId, trackData.name, trackData.duration, trackData.genres);
+            this.tracks.push(track);
+            return track;
+        }
+        else{
+            throw new Error("El track ya esta en el album");
+        }
+    }
+
+    // Chequea la existencia de un track en el album mediante su id
+    hasTrack(id){
+        return this.tracks.map((t)=>t.id).includes(id);
+    }
 }
 
 module.exports = Album;

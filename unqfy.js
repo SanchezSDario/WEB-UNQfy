@@ -14,8 +14,13 @@ class UNQfy {
     this.numId = 1;
   }
   
+  getArtists(){
+    return this.artists;
+  }
+
   generateID(){
-    return this.numId++;
+    this.numId++
+    return this.numId;
   }
 
   // artistData: objeto JS con los datos necesarios para crear un artista
@@ -53,7 +58,7 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    return this.getArtistById(artistId).addAlbum(this.generateID(), albumData)
+    return this.getArtistById(artistId).addAlbum(this.generateID(), albumData);
   } 
 
   // trackData: objeto JS con los datos necesarios para crear un track
@@ -68,18 +73,29 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
+
+
+    /**
+     * Da error de que no encuentra el album en el sistema... no se bien porque, creo que porque el collect
+     * albums deberia ser un flatMap porque por ahi hace un monton de sublistas... pero lo intente usar y no me dejaba
+     * Por el momento lo dejo asi, si se animan toquenlo a ver si lo arreglan
+     * 
+     * - SanchezSDario
+     */
+    return this.getAlbumById(albumId).addTrack(this.generateID(), trackData);
   }
 
+  //Retorna un artista mediante el id del mismo, de no estar en el sistema se arroja una exepcion
   getArtistById(id) { 
     let artist = this.artists.find((a)=>a.getId()===id);
-    if(artist === undefined){
-      throw new Error("El artista no existe");
-    }
-    else{return artist;}
+    return this.returnIfExists(artist, "artista");
   }
 
-  getAlbumById(id) {
 
+  //Retorna un artistaMediante el id del mismo, de no estar en el sistema se arroja una exepcion
+  getAlbumById(id) {
+    let album = this.collectAlbums().find((a)=>a.id===id);
+    return this.returnIfExists(album, "album");
   }
 
   getTrackById(id) {
@@ -88,6 +104,24 @@ class UNQfy {
 
   getPlaylistById(id) {
 
+  }
+
+  // Metodo auxiliar de los gettersById, recibe un objeto y un string que (preferentemente) es el nombre de
+  // la clase que se busca.
+  // Compara el objeto pasado con undefined, si cumple la condicion lanza una excepcion, de lo contrario retorna el objeto
+  returnIfExists(obj, objName){
+    if(obj === undefined){
+      throw new Error("El/La " + objName + " no existe en el sistema");
+    }
+    else{return obj;}
+  }
+
+  // Retorna los albumes en el sistema, que son la suma de todos los albumes de todos los artistas
+  // TODO: Revisar porque quizas deba usarse un flatMap o algo debe estar pasando ya que addTrack da error...
+  //       si no es aca no se donde podria estar el error
+  // - SanchezSDario
+  collectAlbums(){
+    return this.artists.map((fArtist) => fArtist.albums);
   }
 
   // genres: array de generos(strings)
