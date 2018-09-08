@@ -52,7 +52,7 @@ class Artist{
             return album;
         }
         else{
-            throw new Error("El artista ya tiene un album con el id " + albumId);
+            throw new Error("El artista ya tiene un album con el id " + str(albumId));
         }
     }
 
