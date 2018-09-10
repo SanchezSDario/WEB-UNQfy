@@ -1,4 +1,4 @@
-/* eslint-env node, mocha */
+
 
 const assert = require('chai').assert;
 const libunqfy = require('./unqfy');

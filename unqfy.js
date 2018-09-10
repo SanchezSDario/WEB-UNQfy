@@ -13,7 +13,7 @@ class UNQfy {
     this.playlists = []
     this.numId = 1;
   }
-  
+
   getArtists(){
     return this.artists;
   }
@@ -89,7 +89,9 @@ class UNQfy {
   }
 
   getTrackById(id) {
-
+    let albums = this.collectAlbums();
+    let tracks  = this.collecTracks(albums);
+    return this.returnIfExists(track , "track") ;
   }
 
   getPlaylistById(id) {
@@ -122,14 +124,26 @@ class UNQfy {
     let tracks = this.collecTracks(albums);
     // Hasta aca funciona bien, tracks tiene la lista de track de todos los artistas y sus albums.
 //     
-    let result = tracks.filter(function(a) { 
-        
-    });
+    let result = tracks.filter((t)=> this.genresInclude(t.getGenres() , genres));
     return result;
   }
   
+
+//Dada dos listas de Generos , cheque que los elementos de la primera coincida con alguna de la segunda
+  genresInclude(trackGenres , genres){ 
+    let res=false; 
+  for(let i=0;i<trackGenres.length;i++){  
+    if(genres.includes(trackGenres[i])){
+      res = true;
+    }
+  } 
+  return res;
+} 
+
+
+
   checkGenres(listGenres , listGeneralGenres){
-      for 
+      
   }
   
   collecTracks(listAlbums){
@@ -139,6 +153,7 @@ class UNQfy {
     });
     return flatResultado;
   }
+
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
@@ -158,7 +173,41 @@ class UNQfy {
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
 
+  let playList = new Playlist(name , genresToInclude, maxDuration); 
+  let tracks = this.tracksForPlaylist(genresToInclude , maxDuration); 
+  playList.setTracks(tracks); 
+  return playList;
   }
+
+  
+// Crea una lista de tracks , dada una lista de generos y una duracion estimativa.   
+tracksForPlaylist(genres , duration){
+tracks = this.getTracksMatchingGenres(genres);
+let res = []; 
+for(let i=0;this.sumarTiempoDeTracks(res)<duration && i<tracks.length;i++){ 
+  res[i]=tracks[Math.floor(Math.random() * tracks.length)];
+
+}
+return res;
+}
+
+
+//Devuelve la suma de la duracion de la lista de tracks que recibe.
+sumarTiempoDeTracks(tracks){ 
+let mapTime = tracks.map((t)=> m.duration); 
+return mapTime.reduce((number , initialValue)=>initialValue + number , 0);
+} 
+
+//Dado un string retorna un
+searchByName(string){
+let res = {artists:[], albums:[] , tracks:[] , playlists:[]} 
+res.artists = this.artists.filter((a)=>a.getName()===string);
+res.albums = this.collectAlbums.filter((a)=>a.getName()===string); 
+res.tracks = this.collecTracks(this.collectAlbums).filter((t)=>t.getName()===string);
+res.playlists = this.playlists.filter((p)=>p.getName===string);
+
+return res;
+}
 
   save(filename) {
     const listenersBkp = this.listeners;
