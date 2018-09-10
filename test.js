@@ -51,7 +51,7 @@ describe('Add, remove and filter data', () => {
     assert.equal(track.genres.includes('rock'), true);
     assert.equal(track.genres.includes('hard rock'), true);
     assert.lengthOf(track.genres, 2);
-  });
+  });   
 
   it('should find different things by name', () => {
     const artist1 = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');

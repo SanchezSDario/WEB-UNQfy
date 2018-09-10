@@ -56,7 +56,7 @@ class Album{
     // Agrega un track al album, si el id del track ya estaba en el album lanza una excepcion,
     // de lo contrario crea un track, lo agrega al album y lo retorna
     addTrack(trackId, trackData){
-        if(! hasTrack(trackId)){
+        if(! this.hasTrack(trackId)){
             let track = new Track(trackId, trackData.name, trackData.duration, trackData.genres);
             this.tracks.push(track);
             return track;

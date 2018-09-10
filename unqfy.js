@@ -36,11 +36,10 @@ class UNQfy {
   
   //Se puso el ID por default hasta definir como lo vamos a generar
   let artistToAdd = new Artist(this.generateID(), artistData.name, artistData.country);
-  //console.log(artistToAdd);
+
   
     if(!this.artists.includes(artistToAdd)){
             this.artists.push(artistToAdd);
-     //       console.log(this.artists);
             return artistToAdd;
         } else {
             throw new Error("El artista ya esta incluido");
@@ -74,14 +73,6 @@ class UNQfy {
       - una propiedad genres (lista de strings)
   */
 
-
-    /**
-     * Da error de que no encuentra el album en el sistema... no se bien porque, creo que porque el collect
-     * albums deberia ser un flatMap porque por ahi hace un monton de sublistas... pero lo intente usar y no me dejaba
-     * Por el momento lo dejo asi, si se animan toquenlo a ver si lo arreglan
-     * 
-     * - SanchezSDario
-     */
     return this.getAlbumById(albumId).addTrack(this.generateID(), trackData);
   }
 
@@ -91,10 +82,9 @@ class UNQfy {
     return this.returnIfExists(artist, "artista");
   }
 
-
-  //Retorna un artistaMediante el id del mismo, de no estar en el sistema se arroja una exepcion
+  //Retorna un album mediante el id del mismo, de no estar en el sistema se arroja una exepcion
   getAlbumById(id) {
-    let album = this.collectAlbums().find((a)=>a.id===id);
+    let album = this.collectAlbums().find((a)=>a.id==id) ;
     return this.returnIfExists(album, "album");
   }
 
@@ -117,17 +107,18 @@ class UNQfy {
   }
 
   // Retorna los albumes en el sistema, que son la suma de todos los albumes de todos los artistas
-  // TODO: Revisar porque quizas deba usarse un flatMap o algo debe estar pasando ya que addTrack da error...
-  //       si no es aca no se donde podria estar el error
-  // - SanchezSDario
   collectAlbums(){
-    return this.artists.map((fArtist) => fArtist.albums);
+    let resultadoAlbums = this.artists.map((fArtist) => fArtist.albums);
+    let flatResultado = resultadoAlbums.reduce(function(a, b) { 
+        return a.concat(b);         
+    });
+    return flatResultado;
   }
 
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres) {
-
+    
   }
 
   // artistName: nombre de artista(string)
