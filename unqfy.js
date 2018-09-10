@@ -118,9 +118,27 @@ class UNQfy {
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres) {
-    
+    let albums = this.collectAlbums();
+    let tracks = this.collecTracks(albums);
+    // Hasta aca funciona bien, tracks tiene la lista de track de todos los artistas y sus albums.
+//     
+    let result = tracks.filter(function(a) { 
+        
+    });
+    return result;
   }
-
+  
+  checkGenres(listGenres , listGeneralGenres){
+      for 
+  }
+  
+  collecTracks(listAlbums){
+    let resultadoTracks = listAlbums.map((fAlbum) => fAlbum.tracks);
+    let flatResultado = resultadoTracks.reduce(function(a, b) { 
+        return a.concat(b);         
+    });
+    return flatResultado;
+  }
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
