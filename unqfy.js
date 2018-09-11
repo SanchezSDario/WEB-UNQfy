@@ -172,6 +172,7 @@ class UNQfy {
   let playListRes = new Playlist(name , genresToInclude, maxDuration); 
   let tracks = this.tracksForPlaylist(genresToInclude , maxDuration);
   playListRes.setTracks(tracks);
+  this.playlists = this.playlists.concat(playListRes);
   return playListRes;
   }
 
@@ -181,9 +182,7 @@ class UNQfy {
   let tracks = this.getTracksMatchingGenres(genres);
   let res = [];
   for(let i=0;this.sumarTiempoDeTracks(res)<duration && i<tracks.length;i++){ 
-      
-  //Tenemos que evitar el random ya que no da siempre lo mismo y elije tracks que ya estan en la lista y no deberia tener repetidos antes de agregar
-  res[i]=tracks[Math.floor(Math.random() * tracks.length)];
+  res[i]=tracks[i];
   }
   return res;
 }
@@ -204,7 +203,6 @@ class UNQfy {
   res.artists = this.artists.filter((a)=>a.getName().includes(string));
   res.albums = this.collectAlbums().filter((a)=>a.getName().includes(string)); 
   res.tracks = this.collecTracks(this.collectAlbums()).filter((t)=>t.getName().includes(string));
-  // Si no me equivoco esto falla porque no se crea bien la lista. Los anteriores a esta linea agregan correctamente (chequeado con console.log)
   res.playlists = this.playlists.filter((p)=>p.getName().includes(string));
   return res;
 }
