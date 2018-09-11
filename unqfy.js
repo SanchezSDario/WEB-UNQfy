@@ -95,7 +95,8 @@ class UNQfy {
   }
 
   getPlaylistById(id) {
-
+    let playlist = this.playlists.find((a)=>a.getId()===id);
+    return this.returnIfExists(playlist, "playlist");
   }
 
   // Metodo auxiliar de los gettersById, recibe un objeto y un string que (preferentemente) es el nombre de
@@ -122,8 +123,7 @@ class UNQfy {
   getTracksMatchingGenres(genres) {
     let albums = this.collectAlbums();
     let tracks = this.collecTracks(albums);
-    // Hasta aca funciona bien, tracks tiene la lista de track de todos los artistas y sus albums.
-//     
+ 
     let result = tracks.filter((t)=> this.genresInclude(t.getGenres() , genres));
     return result;
   }
@@ -139,12 +139,6 @@ class UNQfy {
   } 
   return res;
 } 
-
-
-
-  checkGenres(listGenres , listGeneralGenres){
-      
-  }
   
   collecTracks(listAlbums){
     let resultadoTracks = listAlbums.map((fAlbum) => fAlbum.tracks);
@@ -155,9 +149,11 @@ class UNQfy {
   }
 
   // artistName: nombre de artista(string)
-  // retorna: los tracks interpredatos por el artista con nombre artistName
+  // retorna: los tracks interpretados por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
-
+    let artistTrack = this.getArtistById(artistName.getId());
+    let res = this.collecTracks(artistTrack.getAlbums());
+    return res;    
   }
 
 
@@ -173,40 +169,44 @@ class UNQfy {
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
 
-  let playList = new Playlist(name , genresToInclude, maxDuration); 
-  let tracks = this.tracksForPlaylist(genresToInclude , maxDuration); 
-  playList.setTracks(tracks); 
-  return playList;
+  let playListRes = new Playlist(name , genresToInclude, maxDuration); 
+  let tracks = this.tracksForPlaylist(genresToInclude , maxDuration);
+  playListRes.setTracks(tracks);
+  return playListRes;
   }
 
   
-// Crea una lista de tracks , dada una lista de generos y una duracion estimativa.   
-tracksForPlaylist(genres , duration){
-tracks = this.getTracksMatchingGenres(genres);
-let res = []; 
-for(let i=0;this.sumarTiempoDeTracks(res)<duration && i<tracks.length;i++){ 
+  // Crea una lista de tracks , dada una lista de generos y una duracion estimativa.   
+  tracksForPlaylist(genres , duration){
+  let tracks = this.getTracksMatchingGenres(genres);
+  let res = [];
+  for(let i=0;this.sumarTiempoDeTracks(res)<duration && i<tracks.length;i++){ 
+      
+  //Tenemos que evitar el random ya que no da siempre lo mismo y elije tracks que ya estan en la lista y no deberia tener repetidos antes de agregar
   res[i]=tracks[Math.floor(Math.random() * tracks.length)];
-
+  }
+  return res;
 }
-return res;
-}
 
 
-//Devuelve la suma de la duracion de la lista de tracks que recibe.
-sumarTiempoDeTracks(tracks){ 
-let mapTime = tracks.map((t)=> m.duration); 
-return mapTime.reduce((number , initialValue)=>initialValue + number , 0);
+  //Devuelve la suma de la duracion de la lista de tracks que recibe.
+  sumarTiempoDeTracks(tracks){  
+  let mapTime = tracks.map((t)=> t.duration); 
+  return mapTime.reduce((number , initialValue)=>initialValue + number , 0);
+  
 } 
 
-//Dado un string retorna un
-searchByName(string){
-let res = {artists:[], albums:[] , tracks:[] , playlists:[]} 
-res.artists = this.artists.filter((a)=>a.getName()===string);
-res.albums = this.collectAlbums.filter((a)=>a.getName()===string); 
-res.tracks = this.collecTracks(this.collectAlbums).filter((t)=>t.getName()===string);
-res.playlists = this.playlists.filter((p)=>p.getName===string);
-
-return res;
+  //Dado un string retorna todos los elementos que tengan ese string en el nombre
+  searchByName(string){
+  
+  let res = {artists:[], albums:[] , tracks:[] , playlists:[]}   
+  
+  res.artists = this.artists.filter((a)=>a.getName().includes(string));
+  res.albums = this.collectAlbums().filter((a)=>a.getName().includes(string)); 
+  res.tracks = this.collecTracks(this.collectAlbums()).filter((t)=>t.getName().includes(string));
+  // Si no me equivoco esto falla porque no se crea bien la lista. Los anteriores a esta linea agregan correctamente (chequeado con console.log)
+  res.playlists = this.playlists.filter((p)=>p.getName().includes(string));
+  return res;
 }
 
   save(filename) {

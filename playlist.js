@@ -3,6 +3,7 @@ class Playlist{
         this.name = _name;
         this.genres = _genres;
         this.duration = _duration;
+        this.tracks = [];
     }
 
     getName(){
@@ -33,6 +34,11 @@ class Playlist{
     setTracks(tracks){
         this.tracks = tracks;
     }
+    
+    hasTrack(track){
+        return this.tracks.includes(track);
+    }
+        
 }
 
 module.exports = Playlist;
