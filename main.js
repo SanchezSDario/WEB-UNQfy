@@ -46,9 +46,9 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 
 */
 
-function main() {
-  console.log('arguments: ');
-  process.argv.forEach(argument => console.log(argument));
+module.exports.help = function(){
+  console.log("COMMANDS");
+  return("That's all");
 }
 
-main();
+require("make-runnable");

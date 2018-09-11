@@ -5,6 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "chai": "^4.1.2",
+    "make-runnable": "^1.3.6",
     "picklify": "github:lwoites/picklify"
   },
   "devDependencies": {

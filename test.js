@@ -82,8 +82,6 @@ describe('Add, remove and filter data', () => {
 
     const tracksMatching = unqfy.getTracksMatchingGenres(['pop', 'movie']);
     
-    //Consultar porque la linea de abajo no reconoce a "tracks"
-    //assert.equal(tracks.matching.constructor.name, Array);
     assert.isArray(tracksMatching);
     assert.lengthOf(tracksMatching, 4);
     assert.equal(tracksMatching.includes(t0), true);

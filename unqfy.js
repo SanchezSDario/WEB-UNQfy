@@ -38,15 +38,18 @@ class UNQfy {
   let artistToAdd = new Artist(this.generateID(), artistData.name, artistData.country);
 
   
-    if(!this.artists.includes(artistToAdd)){
+    if(!this.hasArtist(artistToAdd)){
             this.artists.push(artistToAdd);
             return artistToAdd;
         } else {
-            throw new Error("El artista ya esta incluido");
+            throw new Error("El artista " + artistToAdd.getName() + " ya esta incluido");
         }
   }     
 
-
+  hasArtist(artist){
+    return this.artists.map((a) => a.getName()).includes(artist.getName());
+  }
+  
   // albumData: objeto JS con los datos necesarios para crear un album
   //   albumData.name (string)
   //   albumData.year (number)
