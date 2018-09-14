@@ -48,7 +48,66 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 
 module.exports.help = function(){
   console.log("COMMANDS");
+  console.log("getArtistById(artistId)");
+  console.log("getAlbumtById(AlbumId)");
+  console.log("getTrackById(trackId)");
+  console.log("getPlaylistById(playlistId)");
+  console.log("getArtists");
+  console.log("addArtist(artistName, artistCountry)");
+  console.log("addAlbum(artistId, albumName, albumYear)");
+  console.log("addTrack(albumId, trackName, trackDuration, trackGenres)");
+  console.log("getTracksMatchingGenres(genresToMatch)");
   return("That's all");
+}
+
+module.exports.getArtistById = function(artistId){
+  let unqfy = getUNQfy();
+  return unqfy.getArtistById(artistId);
+}
+
+module.exports.getAlbumById = function(albumId){
+  let unqfy = getUNQfy();
+  return unqfy.getAlbumById(albumId);
+}
+
+module.exports.getTrackById = function(trackId){
+  let unqfy = getUNQfy();
+  return unqfy.getTrackById(trackId);
+}
+
+module.exports.getPlaylistById = function(playlistId){
+  let unqfy = getUNQfy();
+  return unqfy.getPlaylistById(playlistId);
+}
+
+module.exports.getArtists = function(){
+  let unqfy = getUNQfy();
+  return unqfy.getArtists();
+}
+
+module.exports.addArtist = function(artistName, artistCountry){
+  let unqfy = getUNQfy();
+  unqfy.addArtist({name:artistName, country:artistCountry});
+  saveUNQfy(unqfy);
+}
+
+module.exports.addAlbum = function(artistId, albumName, albumYear){
+  let unqfy = getUNQfy();
+  unqfy.addAlbum(artistId, {name:albumName, year:albumYear});
+  saveUNQfy(unqfy);
+}
+
+module.exports.addTrack = function(albumId, trackName, trackDuration, trackGenres){
+  let unqfy = getUNQfy();
+  unqfy.addTrack(albumId, {name:trackName, duration:trackDuration, genres:trackGenres});
+  saveUNQfy(unqfy);  
+}
+
+//ARREGLAR, MAS INFO EN UNQFY.JS
+//TODO
+module.exports.getTracksMatchingGenres = function(genresToMatch){
+  let unqfy = getUNQfy();
+  return unqfy.getTracksMatchingGenres(genresToMatch); 
 }
 
 require("make-runnable");

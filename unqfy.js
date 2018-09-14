@@ -87,13 +87,13 @@ class UNQfy {
 
   //Retorna un album mediante el id del mismo, de no estar en el sistema se arroja una exepcion
   getAlbumById(id) {
-    let album = this.collectAlbums().find((a)=>a.id==id) ;
+    let album = this.collectAlbums().find((a)=>a.id===id) ;
     return this.returnIfExists(album, "album");
   }
 
   getTrackById(id) {
-    let albums = this.collectAlbums();
-    let tracks  = this.collecTracks(albums);
+    let tracks  = this.collecTracks(this.collectAlbums());
+    let track = tracks.find((t)=>t.id===id)
     return this.returnIfExists(track , "track") ;
   }
 
@@ -132,16 +132,18 @@ class UNQfy {
   }
   
 
-//Dada dos listas de Generos , cheque que los elementos de la primera coincida con alguna de la segunda
+  //Dada dos listas de Generos , cheque que los elementos de la primera coincida con alguna de la segunda
+  //ARREGLAR, SI PUSIERA TODO EL ABCDARIO ME TRAERIA TODA LA BASE, ESO ES PORQUE APENAS MATCHEA CARACTER CAMBIA LA VARIABLE
+  //TODO
   genresInclude(trackGenres , genres){ 
     let res=false; 
-  for(let i=0;i<trackGenres.length;i++){  
-    if(genres.includes(trackGenres[i])){
-      res = true;
-    }
-  } 
-  return res;
-} 
+    for(let i=0;i<trackGenres.length;i++){  
+     if(genres.includes(trackGenres[i])){
+       res = true;
+      }
+    }  
+    return res;
+  }  
   
   collecTracks(listAlbums){
     let resultadoTracks = listAlbums.map((fAlbum) => fAlbum.tracks);
