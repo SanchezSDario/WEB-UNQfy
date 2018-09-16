@@ -48,17 +48,30 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 
 module.exports.help = function(){
   console.log("COMMANDS");
-  console.log("getArtistById(artistId)");
-  console.log("getAlbumtById(AlbumId)");
-  console.log("getTrackById(trackId)");
-  console.log("getPlaylistById(playlistId)");
   console.log("getArtists");
-  console.log("addArtist(artistName, artistCountry)");
-  console.log("addAlbum(artistId, albumName, albumYear)");
-  console.log("addTrack(albumId, trackName, trackDuration, trackGenres)");
-  console.log("getTracksMatchingGenres(genresToMatch)");
+  console.log("getPlaylists");
+  console.log("getArtistById artistId ");
+  console.log("getAlbumtById albumId ");
+  console.log("getTrackById trackId ");
+  console.log("getPlaylistById playlistId ");
+  console.log("addArtist artistName artistCountry ");
+  console.log("addAlbum artistId albumName albumYear");
+  console.log("addTrack albumId trackName trackDuration trackGenres");
+  console.log("getTracksMatchingGenres genresToMatch ");
+  console.log("getTracksMatchingArtist artistToMatch ");
   return("That's all");
 }
+
+module.exports.getArtists = function(){
+  let unqfy = getUNQfy();
+  return unqfy.getArtists();
+}
+
+module.exports.getPlaylists = function(){
+  let unqfy = getUNQfy();
+  return unqfy.getPlaylists();
+}
+
 
 module.exports.getArtistById = function(artistId){
   let unqfy = getUNQfy();
@@ -80,11 +93,6 @@ module.exports.getPlaylistById = function(playlistId){
   return unqfy.getPlaylistById(playlistId);
 }
 
-module.exports.getArtists = function(){
-  let unqfy = getUNQfy();
-  return unqfy.getArtists();
-}
-
 module.exports.addArtist = function(artistName, artistCountry){
   let unqfy = getUNQfy();
   unqfy.addArtist({name:artistName, country:artistCountry});
@@ -103,11 +111,27 @@ module.exports.addTrack = function(albumId, trackName, trackDuration, trackGenre
   saveUNQfy(unqfy);  
 }
 
-//ARREGLAR, MAS INFO EN UNQFY.JS
-//TODO
 module.exports.getTracksMatchingGenres = function(genresToMatch){
   let unqfy = getUNQfy();
   return unqfy.getTracksMatchingGenres(genresToMatch); 
+}
+
+//RARO... MAS INFO EN UNQFY,JS
+module.exports.getTracksMatchingGenres = function(genresToMatch){
+  let unqfy = getUNQfy();
+  return unqfy.getTracksMatchingGenres(genresToMatch); 
+}
+
+//RARO... MAS INFO EN UNQFY,JS
+module.exports.getTracksMatchingArtist = function(artistToMatch){
+  let unqfy = getUNQfy();
+  return unqfy.getTracksMatchingArtist(artistToMatch); 
+}
+
+module.exports.createPlaylist = function(playlistName, genresToInclude, maxDuration){
+  let unqfy = getUNQfy();
+  unqfy.createPlaylist(playlistName, genresToInclude, maxDuration);
+  saveUNQfy(unqfy); 
 }
 
 require("make-runnable");

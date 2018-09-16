@@ -18,6 +18,10 @@ class UNQfy {
     return this.artists;
   }
 
+  getPlaylists(){
+    return this.playlists;
+  }
+
   generateID(){
     this.numId++
     return this.numId;
@@ -98,7 +102,7 @@ class UNQfy {
   }
 
   getPlaylistById(id) {
-    let playlist = this.playlists.find((a)=>a.getId()===id);
+    let playlist = this.playlists.find((a)=>a.name===id);
     return this.returnIfExists(playlist, "playlist");
   }
 
@@ -133,8 +137,7 @@ class UNQfy {
   
 
   //Dada dos listas de Generos , cheque que los elementos de la primera coincida con alguna de la segunda
-  //ARREGLAR, SI PUSIERA TODO EL ABCDARIO ME TRAERIA TODA LA BASE, ESO ES PORQUE APENAS MATCHEA CARACTER CAMBIA LA VARIABLE
-  //TODO
+  //RARO POR DISCRIMINAR EL TIPO... ES POR DIFERENCIA DE REQUERIMIENTO CON LO QUE TIENE EL TEST
   genresInclude(trackGenres , genres){ 
     if(typeof(genres) === "string"){
       return this.genresIncludeAux(trackGenres, genres.split(", "));
@@ -163,12 +166,19 @@ class UNQfy {
 
   // artistName: nombre de artista(string)
   // retorna: los tracks interpretados por el artista con nombre artistName
-  getTracksMatchingArtist(artistName) {
-    let artistTrack = this.getArtistById(artistName.getId());
+  //RARO POR DISCRIMINAR EL TIPO... ES POR DIFERENCIA DE REQUERIMIENTO CON LO QUE TIENE EL TEST
+  getTracksMatchingArtist(artist) {
+    let artistTrack
+    if(typeof(artist)==="string"){artistTrack= this.getArtistByName(artist);}
+    else{artistTrack= this.getArtistById(artist.getId());}
     let res = this.collecTracks(artistTrack.getAlbums());
     return res;    
   }
 
+
+  getArtistByName(artistName){
+    return this.artists.find((a) => a.name === artistName);
+  }
 
   // name: nombre de la playlist
   // genresToInclude: array de generos
