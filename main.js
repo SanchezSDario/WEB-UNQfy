@@ -59,6 +59,7 @@ module.exports.help = function(){
   console.log("addTrack albumId trackName trackDuration trackGenres");
   console.log("getTracksMatchingGenres genresToMatch ");
   console.log("getTracksMatchingArtist artistToMatch ");
+  console.log("createPlaylist playlistName genresToInclude maxDuration ");
   return("That's all");
 }
 
