@@ -136,14 +136,22 @@ class UNQfy {
   //ARREGLAR, SI PUSIERA TODO EL ABCDARIO ME TRAERIA TODA LA BASE, ESO ES PORQUE APENAS MATCHEA CARACTER CAMBIA LA VARIABLE
   //TODO
   genresInclude(trackGenres , genres){ 
-    let res=false; 
-    for(let i=0;i<trackGenres.length;i++){  
-     if(genres.includes(trackGenres[i])){
-       res = true;
-      }
-    }  
+    if(typeof(genres) === "string"){
+      return this.genresIncludeAux(trackGenres, genres.split(", "));
+    }
+    else{
+      return this.genresIncludeAux(trackGenres, genres);
+    }
+  }
+
+  genresIncludeAux(trackGenres, genres){
+    let res=false;
+    for(let i=0;i<genres.length;i++){
+      res = trackGenres.includes(genres[i]);
+      if(res){break;}
+    }
     return res;
-  }  
+  }
   
   collecTracks(listAlbums){
     let resultadoTracks = listAlbums.map((fAlbum) => fAlbum.tracks);
