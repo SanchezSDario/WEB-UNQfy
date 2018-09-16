@@ -55,6 +55,7 @@ module.exports.help = function(){
   console.log("getTrackById trackId ");
   console.log("getPlaylistById playlistId ");
   console.log("addArtist artistName artistCountry ");
+  console.log("deleteArtist name ");
   console.log("addAlbum artistId albumName albumYear");
   console.log("addTrack albumId trackName trackDuration trackGenres");
   console.log("getTracksMatchingGenres genresToMatch ");
@@ -99,6 +100,12 @@ module.exports.addArtist = function(artistName, artistCountry){
   unqfy.addArtist({name:artistName, country:artistCountry});
   saveUNQfy(unqfy);
 }
+    
+module.exports.deleteArtist = function(artistName){
+    let unqfy = getUNQfy();
+    unqfy.deleteArtist(artistName);
+    saveUNQfy(unqfy);
+}
 
 module.exports.addAlbum = function(artistId, albumName, albumYear){
   let unqfy = getUNQfy();
@@ -117,13 +124,13 @@ module.exports.getTracksMatchingGenres = function(genresToMatch){
   return unqfy.getTracksMatchingGenres(genresToMatch); 
 }
 
-//RARO... MAS INFO EN UNQFY,JS
+//RARO... MAS INFO EN UNQFY.JS
 module.exports.getTracksMatchingGenres = function(genresToMatch){
   let unqfy = getUNQfy();
   return unqfy.getTracksMatchingGenres(genresToMatch); 
 }
 
-//RARO... MAS INFO EN UNQFY,JS
+//RARO... MAS INFO EN UNQFY.JS
 module.exports.getTracksMatchingArtist = function(artistToMatch){
   let unqfy = getUNQfy();
   return unqfy.getTracksMatchingArtist(artistToMatch); 

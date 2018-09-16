@@ -38,7 +38,6 @@ class UNQfy {
     - una propiedad country (string)
   */
   
-  //Se puso el ID por default hasta definir como lo vamos a generar
   let artistToAdd = new Artist(this.generateID(), artistData.name, artistData.country);
 
   
@@ -52,6 +51,22 @@ class UNQfy {
 
   hasArtist(artist){
     return this.artists.map((a) => a.getName()).includes(artist.getName());
+  }
+  
+
+  // Dado el nombre del artista elimina los tracks, albums y lo borra de las playlist tambien.
+  deleteArtist(artistName){
+      if(this.artists.map((a) => a.getName()).includes(artistName)){
+          return this.artists.splice((this.artists.indexOf(this.getArtistByName(artistName))), 1);
+          //    this.deleteArtistFromPlaylist(artistName)
+      } else{
+            throw new Error("El artista " + artistName + " no esta incluido en la lista de artistas");
+    }
+  }
+  
+  getArtistByName(name){
+    
+    return this.artist.find((a)=>a.getName()===name);
   }
   
   // albumData: objeto JS con los datos necesarios para crear un album
@@ -95,12 +110,14 @@ class UNQfy {
     return this.returnIfExists(album, "album");
   }
 
+  //Retorna un track mediante el id del mismo, de no estar en el sistema se arroja una exepcion
   getTrackById(id) {
     let tracks  = this.collecTracks(this.collectAlbums());
     let track = tracks.find((t)=>t.id===id)
     return this.returnIfExists(track , "track") ;
   }
 
+  //Retorna una playlist mediante el id del mismo, de no estar en el sistema se arroja una exepcion
   getPlaylistById(id) {
     let playlist = this.playlists.find((a)=>a.name===id);
     return this.returnIfExists(playlist, "playlist");
@@ -157,7 +174,7 @@ class UNQfy {
   }
   
   collecTracks(listAlbums){
-    let resultadoTracks = listAlbums.map((fAlbum) => fAlbum.tracks);
+    let resultadoTracks = listAlbums.map((fAlbum) => fAlbum.getTracks());
     let flatResultado = resultadoTracks.reduce(function(a, b) { 
         return a.concat(b);         
     });
@@ -169,8 +186,15 @@ class UNQfy {
   //RARO POR DISCRIMINAR EL TIPO... ES POR DIFERENCIA DE REQUERIMIENTO CON LO QUE TIENE EL TEST
   getTracksMatchingArtist(artist) {
     let artistTrack
-    if(typeof(artist)==="string"){artistTrack= this.getArtistByName(artist);}
-    else{artistTrack= this.getArtistById(artist.getId());}
+    if(typeof(artist)==="string"){
+        
+        artistTrack= this.getArtistByName(artist);
+        
+    } else{
+        
+        artistTrack= this.getArtistById(artist.getId());
+        
+    }
     let res = this.collecTracks(artistTrack.getAlbums());
     return res;    
   }
