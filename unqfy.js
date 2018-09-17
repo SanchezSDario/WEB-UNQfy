@@ -65,7 +65,6 @@ class UNQfy {
   }
   
   getArtistByName(name){
-    
     return this.artist.find((a)=>a.getName()===name);
   }
   
@@ -80,7 +79,23 @@ class UNQfy {
      - una propiedad year (number)
   */
     return this.getArtistById(artistId).addAlbum(this.generateID(), albumData);
-  } 
+  }
+  
+  //Dado un artista y un album, elimina el album de ese artista 
+  deleteAlbum(artistName, albumName){
+      if (this.artists.map((a) => a.getName()).includes(artistName)){
+          let artist = this.getArtistByName(artistName)
+          let listAlbums = artist.getAlbums();
+          listAlbums.splice((listAlbums.indexOf(this.getAlbumByName(listAlbums, albumName))), 1);
+          return artist.setAlbums(listAlbums);
+      } else {
+            throw new Error("El artista " + artistName + " no esta incluido en la lista de artistas");
+    }
+  }
+  
+  getAlbumByName(listA, nameAlbum){
+      return listA.find((a)=> a.getName() == nameAlbum);
+  }
 
   // trackData: objeto JS con los datos necesarios para crear un track
   //   trackData.name (string)

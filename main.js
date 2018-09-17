@@ -57,6 +57,7 @@ module.exports.help = function(){
   console.log("addArtist artistName artistCountry ");
   console.log("deleteArtist name ");
   console.log("addAlbum artistId albumName albumYear");
+  console.log("deleteAlbum artistName albumName")
   console.log("addTrack albumId trackName trackDuration trackGenres");
   console.log("getTracksMatchingGenres genresToMatch ");
   console.log("getTracksMatchingArtist artistToMatch ");
@@ -102,14 +103,20 @@ module.exports.addArtist = function(artistName, artistCountry){
 }
     
 module.exports.deleteArtist = function(artistName){
-    let unqfy = getUNQfy();
-    unqfy.deleteArtist(artistName);
-    saveUNQfy(unqfy);
+  let unqfy = getUNQfy();
+  unqfy.deleteArtist(artistName);
+  saveUNQfy(unqfy);
 }
 
 module.exports.addAlbum = function(artistId, albumName, albumYear){
   let unqfy = getUNQfy();
   unqfy.addAlbum(artistId, {name:albumName, year:albumYear});
+  saveUNQfy(unqfy);
+}
+
+module.exports.deleteAlbum = function(artistName, albumName){
+  let unqfy = getUNQfy();
+  unqfy.deleteAlbum(artistName, albumName);
   saveUNQfy(unqfy);
 }
 
