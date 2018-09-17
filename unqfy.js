@@ -84,7 +84,7 @@ class UNQfy {
   //Dado un artista y un album, elimina el album de ese artista 
   deleteAlbum(artistName, albumName){
       if (this.artists.map((a) => a.getName()).includes(artistName)){
-          let artist = this.getArtistByName(artistName)
+          let artist = this.getArtistByName(artistName);
           let listAlbums = artist.getAlbums();
           listAlbums.splice((listAlbums.indexOf(this.getAlbumByName(listAlbums, albumName))), 1);
           return artist.setAlbums(listAlbums);
@@ -111,6 +111,24 @@ class UNQfy {
   */
 
     return this.getAlbumById(albumId).addTrack(this.generateID(), trackData);
+  }
+  
+  deleteTrack(artistName, albumName, trackName){
+      if (this.artists.map((a) => a.getName()).includes(artistName)){
+          let artist = this.getArtistByName(artistName);
+          let album = this.getAlbumByName(artist.getAlbums(), albumName);
+          let listTracks = album.getTracks();
+          
+          listTracks.splice((listTracks.indexOf(this.getTrackByName(listTracks, trackName))), 1);
+          
+          return album.setTracks(listTracks);
+      } else {
+            throw new Error("El artista " + artistName + " no esta incluido en la lista de artistas");
+    }
+  }
+  
+  getTrackByName(listT, nameTrack){
+      return listT.find((a)=> a.getName() == nameTrack);
   }
 
   //Retorna un artista mediante el id del mismo, de no estar en el sistema se arroja una exepcion

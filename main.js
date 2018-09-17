@@ -59,6 +59,7 @@ module.exports.help = function(){
   console.log("addAlbum artistId albumName albumYear");
   console.log("deleteAlbum artistName albumName")
   console.log("addTrack albumId trackName trackDuration trackGenres");
+  console.log("deleteTrack artistName albumName trackName");
   console.log("getTracksMatchingGenres genresToMatch ");
   console.log("getTracksMatchingArtist artistToMatch ");
   console.log("createPlaylist playlistName genresToInclude maxDuration ");
@@ -124,6 +125,12 @@ module.exports.addTrack = function(albumId, trackName, trackDuration, trackGenre
   let unqfy = getUNQfy();
   unqfy.addTrack(albumId, {name:trackName, duration:trackDuration, genres:trackGenres});
   saveUNQfy(unqfy);  
+}
+
+module.exports.deleteTrack = function(artistName, albumName, trackName){
+    let unqfy = getUNQfy();
+    unqfy.deleteTrack(artistName, albumName, trackName);
+    saveUNQfy(unqfy);
 }
 
 module.exports.getTracksMatchingGenres = function(genresToMatch){
