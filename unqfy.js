@@ -206,6 +206,7 @@ class UNQfy {
     return res;
   }
   
+  //Dada una lsita de albumes mapea todos a sus tracks y los retorna en lista
   collecTracks(listAlbums){
     let resultadoTracks = listAlbums.map((fAlbum) => fAlbum.getTracks());
     let flatResultado = resultadoTracks.reduce(function(a, b) { 

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>10</zoom_level>
+  <zoom_level>8</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>50</y>
-      <w>270</w>
-      <h>210</h>
+      <x>8</x>
+      <y>8</y>
+      <w>336</w>
+      <h>360</h>
     </coordinates>
     <panel_attributes>UNQfy
 --
 artists: List&lt;Artist&gt;
 playlists: List&lt;Playlist&gt;
+numId: int
 --
 addArtist(artistData): void
 addAlbum(artistId, albumData): void
@@ -22,16 +23,31 @@ getAlbumById(albumId): List&lt;Album&gt;
 getTrackById(trackId): List&lt;Track&gt;
 getTracksMatchingGenres(genre): List&lt;Track&gt;
 getTracksMatchingArtist(artistName): List&lt;Artist&gt;
-createPlaylist(name, genresToInclude, maxDuration): void</panel_attributes>
+createPlaylist(name, genresToInclude, maxDuration): void
+getArtists(): List&lt;Artist&gt;
+getPlaylists(): List&lt;Playlist&gt;
+generateID(): void
+hasArtist(artist): boolean
+deleteArtist(artistName): void
+getArtistByName(artistName): Artist
+deleteAlbum(artistName, albumName): void
+getAlbumByName(albums, albumName): Album
+deleteTrack(artistName, albumNAme, trackName): void
+geTrackByName(tacks, trackName): Track
+genresInclude(genresList1, genresList2): List&lt;String&gt;
+collecTracks(albumList): List&lt;Track&gt;
+tracksForPlaylist(genresList, duration): List&lt;Track&gt;
+sumarTiempoDeTracks(tracks): int
+searchByName(name): List&lt;Object&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>340</x>
-      <y>50</y>
-      <w>180</w>
-      <h>150</h>
+      <x>392</x>
+      <y>0</y>
+      <w>216</w>
+      <h>128</h>
     </coordinates>
     <panel_attributes>Artist
 --
@@ -42,7 +58,8 @@ albums: List&lt;Album&gt;
 --
 getters
 setters
-getGenres: List&lt;String&gt;
+addAlbum(albumId, albumData): void
+hasAlbum(albumId): boolean
 
 </panel_attributes>
     <additional_attributes/>
@@ -50,10 +67,10 @@ getGenres: List&lt;String&gt;
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>630</x>
-      <y>40</y>
-      <w>180</w>
-      <h>170</h>
+      <x>664</x>
+      <y>16</y>
+      <w>208</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>Album
 --
@@ -65,18 +82,17 @@ composers: List&lt;Artist&gt;
 --
 getters
 setters
-getGenres: List&lt;String&gt;
-
-</panel_attributes>
+addTrack(trackId, trackData): void
+hasTrack(trackId): boolean</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>870</x>
-      <y>50</y>
-      <w>160</w>
-      <h>140</h>
+      <x>912</x>
+      <y>40</y>
+      <w>128</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>Track
 --
@@ -92,93 +108,94 @@ setters</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>330</x>
-      <y>280</y>
-      <w>190</w>
-      <h>130</h>
+      <x>392</x>
+      <y>200</y>
+      <w>152</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>Playlist
 --
-name: String //unico
+name: String
+genres: List&lt;String&gt;
 duration: Integer
 tracks: List&lt;Tracks&gt;
 --
 getters
 setters
-getGenres: Array&lt;String&gt;
+hasTrack(track): boolean
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>160</x>
-      <y>50</y>
-      <w>190</w>
-      <h>50</h>
+      <x>336</x>
+      <y>0</y>
+      <w>72</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=0..n</panel_attributes>
-    <additional_attributes>170.0;10.0;10.0;30.0</additional_attributes>
+    <additional_attributes>70.0;10.0;10.0;30.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>170</x>
-      <y>90</y>
-      <w>200</w>
-      <h>210</h>
+      <x>336</x>
+      <y>48</y>
+      <w>88</w>
+      <h>168</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=0..n</panel_attributes>
-    <additional_attributes>160.0;190.0;10.0;10.0</additional_attributes>
+    <additional_attributes>70.0;190.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
+      <x>600</x>
+      <y>16</y>
+      <w>80</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>864</x>
       <y>40</y>
-      <w>140</w>
-      <h>110</h>
+      <w>64</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=0..n</panel_attributes>
-    <additional_attributes>120.0;10.0;10.0;90.0</additional_attributes>
+    <additional_attributes>60.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>770</x>
-      <y>50</y>
-      <w>120</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-m1=0..n</panel_attributes>
-    <additional_attributes>100.0;10.0;10.0;70.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>480</x>
-      <y>180</y>
-      <w>410</w>
-      <h>180</h>
+      <x>536</x>
+      <y>144</y>
+      <w>392</w>
+      <h>128</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=1..n</panel_attributes>
-    <additional_attributes>390.0;10.0;10.0;160.0</additional_attributes>
+    <additional_attributes>470.0;10.0;10.0;140.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
-      <y>50</y>
-      <w>140</w>
-      <h>110</h>
+      <x>600</x>
+      <y>0</y>
+      <w>80</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=1..n</panel_attributes>
-    <additional_attributes>10.0;10.0;120.0;90.0</additional_attributes>
+    <additional_attributes>10.0;10.0;80.0;120.0</additional_attributes>
   </element>
 </diagram>
