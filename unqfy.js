@@ -152,7 +152,7 @@ class UNQfy {
 
   //Retorna una playlist mediante el id del mismo, de no estar en el sistema se arroja una exepcion
   getPlaylistById(id) {
-    let playlist = this.playlists.find((a)=>a.name===id);
+    let playlist = this.playlists.find((a)=>a.id===id);
     return this.returnIfExists(playlist, "playlist");
   }
 
@@ -250,7 +250,7 @@ class UNQfy {
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
 
-  let playListRes = new Playlist(name , genresToInclude, maxDuration); 
+  let playListRes = new Playlist(this.generateID(), name , genresToInclude, maxDuration); 
   let tracks = this.tracksForPlaylist(genresToInclude , maxDuration);
   playListRes.setTracks(tracks);
   this.playlists = this.playlists.concat(playListRes);
