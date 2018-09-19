@@ -86,7 +86,7 @@ class UNQfy {
     let tracksFromAlbumToDelete = albumToDelete.tracks;
     tracksFromAlbumToDelete.forEach((t)=> this.deleteTrackFromPlaylists(t));
     albumToDelete.tracks.forEach((t)=> this.deleteTrackFromAlbum(albumToDelete, t.name));
-    this.deleteAlbumFromArtist(artistWithAlbum, albumToDelete);
+    this.deleteAlbumFromArtist(artistWithAlbum, albumToDelete.name);
     albumToDelete =null;
   }
 
