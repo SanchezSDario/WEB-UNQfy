@@ -56,16 +56,14 @@ class UNQfy {
 
   // Dado el nombre del artista elimina los tracks, albums y lo borra de las playlist tambien.
   deleteArtist(artistName){
-      if(this.artists.map((a) => a.getName()).includes(artistName)){
-          return this.artists.splice((this.artists.indexOf(this.getArtistByName(artistName))), 1);
-          //    this.deleteArtistFromPlaylist(artistName)
-      } else{
-            throw new Error("El artista " + artistName + " no esta incluido en la lista de artistas");
-    }
-  }
-  
-  getArtistByName(name){
-    return this.artist.find((a)=>a.getName()===name);
+     let artistToDelete = this.getArtistByName(artistName);
+     let artistAlbums = artistToDelete.albums;
+     let artistTracks = this.collecTracks(artistAlbums);
+     artistTracks.forEach((t)=> this.deleteTrackFromPlaylists(t));
+     artistAlbums.forEach((a)=> a.tracks.forEach((t)=> this.deleteTrackFromAlbum(a, t.name)));
+     artistToDelete.albums.forEach((a)=> this.deleteAlbumFromArtist(artistToDelete, a.name));
+     this.artists.splice(this.artists.indexOf(artistToDelete), 1);
+     artistToDelete = null;
   }
   
   // albumData: objeto JS con los datos necesarios para crear un album
@@ -83,18 +81,13 @@ class UNQfy {
   
   //Dado un artista y un album, elimina el album de ese artista 
   deleteAlbum(artistName, albumName){
-      if (this.artists.map((a) => a.getName()).includes(artistName)){
-          let artist = this.getArtistByName(artistName);
-          let listAlbums = artist.getAlbums();
-          listAlbums.splice((listAlbums.indexOf(this.getAlbumByName(listAlbums, albumName))), 1);
-          return artist.setAlbums(listAlbums);
-      } else {
-            throw new Error("El artista " + artistName + " no esta incluido en la lista de artistas");
-    }
-  }
-  
-  getAlbumByName(listA, nameAlbum){
-      return listA.find((a)=> a.getName() == nameAlbum);
+    let artistWithAlbum = this.getArtistByName(artistName);
+    let albumToDelete = this.getAlbumInArtist(artistWithAlbum, albumName);
+    let tracksFromAlbumToDelete = albumToDelete.tracks;
+    tracksFromAlbumToDelete.forEach((t)=> this.deleteTrackFromPlaylists(t));
+    albumToDelete.tracks.forEach((t)=> this.deleteTrackFromAlbum(albumToDelete, t.name));
+    this.deleteAlbumFromArtist(artistWithAlbum, albumToDelete);
+    albumToDelete =null;
   }
 
   // trackData: objeto JS con los datos necesarios para crear un track
@@ -112,24 +105,41 @@ class UNQfy {
 
     return this.getAlbumById(albumId).addTrack(this.generateID(), trackData);
   }
-  
-  deleteTrack(artistName, albumName, trackName){
-      if (this.artists.map((a) => a.getName()).includes(artistName)){
-          let artist = this.getArtistByName(artistName);
-          let album = this.getAlbumByName(artist.getAlbums(), albumName);
-          let listTracks = album.getTracks();
-          
-          listTracks.splice((listTracks.indexOf(this.getTrackByName(listTracks, trackName))), 1);
-          
-          return album.setTracks(listTracks);
-      } else {
-            throw new Error("El artista " + artistName + " no esta incluido en la lista de artistas");
-    }
-  }
-  
-  getTrackByName(listT, nameTrack){
-      return listT.find((a)=> a.getName() == nameTrack);
-  }
+
+
+//Dado un nombre de artista, uno de album y uno de track elimina este del sistema reflejandose en los tracks de
+//un album y en los de las playlist de las que forme parte
+ deleteTrack(artistName, albumName, trackName){
+   let artistFromTheTrack = this.getArtistByName(artistName);
+   let albumFromTheArtist = this.getAlbumInArtist(artistFromTheTrack, albumName);
+   let trackToDelete = this.deleteTrackFromAlbum(albumFromTheArtist, trackName);
+   this.deleteTrackFromPlaylists(trackToDelete);
+   trackToDelete = null;
+ }
+
+deleteAlbumFromArtist(artist, albumName){
+  let album = this.returnIfExists(artist.albums.find((a)=> a.name === albumName), "album " + albumName);
+  artist.albums.splice(artist.albums.indexOf(album), 1);
+  return album;
+}
+
+ //Dado un album y un nombre de track busca este en el album, de encontrarlo lo elimina del album y lo retorna.
+ deleteTrackFromAlbum(album, trackName){
+   let track = this.returnIfExists(album.tracks.find((t)=>t.name===trackName), "track " + trackName);
+   album.tracks.splice(album.tracks.indexOf(track), 1);
+   return track;
+ }
+
+ //Dado un artista y un nombre de album busca este en los albumes del artista, de encontrarlo lo retorna.
+ getAlbumInArtist(artist, albumName){
+   return this.returnIfExists(artist.albums.find((a)=> a.name === albumName), "album " + albumName);
+ }
+
+ //Dado un track busca las playlist que lo contengan para asi eliminarlo de las mismas.
+ deleteTrackFromPlaylists(track){
+   let playlistsWithTrack = this.playlists.filter((pl)=> pl.tracks.includes(track));
+   playlistsWithTrack.forEach((pl)=>pl.tracks.splice(pl.tracks.indexOf(track), 1));
+ }
 
   //Retorna un artista mediante el id del mismo, de no estar en el sistema se arroja una exepcion
   getArtistById(id) { 
@@ -197,6 +207,7 @@ class UNQfy {
     }
   }
 
+  //Dado una lista de generos y un genero retorna si este ultimo forma parte de la lista de generos
   genresIncludeAux(trackGenres, genres){
     let res=false;
     for(let i=0;i<genres.length;i++){
@@ -234,8 +245,9 @@ class UNQfy {
   }
 
 
+  //Dado un nombre de artista lo busca en el sistema, de encontrarlo lo retorna
   getArtistByName(artistName){
-    return this.artists.find((a) => a.name === artistName);
+    return this.returnIfExists(this.artists.find((a) => a.name === artistName), "artista " + artistName);
   }
 
   // name: nombre de la playlist
