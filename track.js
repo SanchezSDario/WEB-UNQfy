@@ -37,6 +37,10 @@ class Track{
     setGenres(genres){
         this.genres = genres;
     }
+
+    hasAnyGenre(genres){
+        return genres.filter((g)=> this.genres.includes(g)).length > 0;
+    }
 }
 
 module.exports = Track;

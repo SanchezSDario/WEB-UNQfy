@@ -9,7 +9,7 @@
     "__00001__": {
       "artists": "__00002__",
       "playlists": "__00003__",
-      "numId": 37,
+      "numId": 22,
       "listeners": "__00004__"
     },
     "__00002__": {
@@ -20,89 +20,107 @@
       "0": "__00007__",
       "1": "__00008__",
       "2": "__00009__",
-      "3": "__00010__"
+      "3": "__00010__",
+      "4": "__00011__"
     },
     "__00004__": {},
     "__00005__": {
-      "id": 14,
-      "name": "Nonpalidece",
-      "country": "Argentina",
-      "albums": "__00011__"
-    },
-    "__00006__": {
-      "id": 15,
-      "name": "Cultura profetica",
-      "country": "Puerto Rico",
+      "id": 16,
+      "name": "Pellek",
       "albums": "__00012__"
     },
-    "__00007__": {
-      "name": "CumbiaPunchi",
-      "genres": "Cumbia, Punchi",
-      "duration": 1000,
-      "tracks": "__00013__"
+    "__00006__": {
+      "id": 20,
+      "name": "KKK",
+      "albums": "__00013__"
     },
-    "__00008__": {
-      "name": "Reggae",
-      "genres": "[Reggae]",
-      "duration": 200,
+    "__00007__": {
+      "id": 9,
+      "name": "CompiladoVisado",
+      "genres": "Informatica",
+      "duration": 1000,
       "tracks": "__00014__"
     },
-    "__00009__": {
-      "id": 25,
-      "name": "Reggae",
-      "genres": "[Reggae]",
-      "duration": 260,
+    "__00008__": {
+      "id": 10,
+      "name": "CompiladoVisado2",
+      "genres": "Programacion, Informatica",
+      "duration": 1000,
       "tracks": "__00015__"
     },
-    "__00010__": {
-      "id": 28,
-      "name": "ElPellek",
-      "genres": "Metal",
+    "__00009__": {
+      "id": 11,
+      "name": "CompiladoVisado3",
+      "genres": "JavaScript, Informatica",
       "duration": 1000,
       "tracks": "__00016__"
     },
-    "__00011__": {},
+    "__00010__": {
+      "id": 12,
+      "name": "CompiladoVisado4",
+      "genres": "Programacion, Informatica",
+      "duration": 650,
+      "tracks": "__00017__"
+    },
+    "__00011__": {
+      "id": 15,
+      "name": "mandarinaaaa",
+      "genres": "[Sabroso]",
+      "duration": 123123123,
+      "tracks": "__00018__"
+    },
     "__00012__": {
-      "0": "__00017__"
+      "0": "__00019__"
     },
     "__00013__": {
-      "0": "__00018__",
-      "1": "__00019__"
-    },
-    "__00014__": {
       "0": "__00020__"
     },
-    "__00015__": {
-      "0": "__00020__"
-    },
+    "__00014__": {},
+    "__00015__": {},
     "__00016__": {},
-    "__00017__": {
-      "id": 18,
-      "name": "M.O.T.A",
-      "year": 2005,
+    "__00017__": {},
+    "__00018__": {},
+    "__00019__": {
+      "id": 17,
+      "name": "Album",
+      "year": 2018,
       "tracks": "__00021__",
       "composers": "__00022__"
     },
-    "__00018__": {
-      "id": 5,
-      "name": "Nunca me faltes",
-      "duration": 438,
-      "genres": "[Cumbia]"
-    },
-    "__00019__": {
-      "id": 9,
-      "name": "Night Fever nightcore",
-      "duration": 431,
-      "genres": "[Punchi]"
-    },
     "__00020__": {
-      "id": 22,
-      "name": "Rasta no palidece",
-      "duration": 80,
-      "genres": "[Reggae]"
+      "id": 21,
+      "name": "cccc",
+      "year": 2019,
+      "tracks": "__00023__",
+      "composers": "__00024__"
     },
-    "__00021__": {},
-    "__00022__": {}
+    "__00021__": {
+      "0": "__00025__",
+      "1": "__00026__"
+    },
+    "__00022__": {},
+    "__00023__": {
+      "0": "__00027__"
+    },
+    "__00024__": {},
+    "__00025__": {
+      "id": 18,
+      "name": "aaaaaa",
+      "duration": 123,
+      "genres": "[Pop]"
+    },
+    "__00026__": {
+      "id": 19,
+      "name": "bbbbbbbbb",
+      "duration": 123,
+      "genres": "[Metal]"
+    },
+    "__00027__": {
+      "id": 22,
+      "name": "bbbbbbbbb",
+      "duration": 123,
+      "genres": "[Metal]"
+    }
   },
   "types": {
     "__00001__": "UNQfy",
@@ -115,17 +133,22 @@
     "__00008__": "Playlist",
     "__00009__": "Playlist",
     "__00010__": "Playlist",
-    "__00011__": "Array",
+    "__00011__": "Playlist",
     "__00012__": "Array",
     "__00013__": "Array",
     "__00014__": "Array",
     "__00015__": "Array",
     "__00016__": "Array",
-    "__00017__": "Album",
-    "__00018__": "Track",
-    "__00019__": "Track",
-    "__00020__": "Track",
+    "__00017__": "Array",
+    "__00018__": "Array",
+    "__00019__": "Album",
+    "__00020__": "Album",
     "__00021__": "Array",
-    "__00022__": "Array"
+    "__00022__": "Array",
+    "__00023__": "Array",
+    "__00024__": "Array",
+    "__00025__": "Track",
+    "__00026__": "Track",
+    "__00027__": "Track"
   }
 }

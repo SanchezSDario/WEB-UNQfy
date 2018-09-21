@@ -191,30 +191,8 @@ deleteAlbumFromArtist(artist, albumName){
     let albums = this.collectAlbums();
     let tracks = this.collecTracks(albums);
  
-    let result = tracks.filter((t)=> this.genresInclude(t.getGenres() , genres));
+    let result = tracks.filter((t)=> t.hasAnyGenre(genres));
     return result;
-  }
-  
-
-  //Dada dos listas de Generos , cheque que los elementos de la primera coincida con alguna de la segunda
-  //RARO POR DISCRIMINAR EL TIPO... ES POR DIFERENCIA DE REQUERIMIENTO CON LO QUE TIENE EL TEST
-  genresInclude(trackGenres , genres){ 
-    if(typeof(genres) === "string"){
-      return this.genresIncludeAux(trackGenres, genres.split(", "));
-    }
-    else{
-      return this.genresIncludeAux(trackGenres, genres);
-    }
-  }
-
-  //Dado una lista de generos y un genero retorna si este ultimo forma parte de la lista de generos
-  genresIncludeAux(trackGenres, genres){
-    let res=false;
-    for(let i=0;i<genres.length;i++){
-      res = trackGenres.includes(genres[i]);
-      if(res){break;}
-    }
-    return res;
   }
   
   //Dada una lsita de albumes mapea todos a sus tracks y los retorna en lista
@@ -228,23 +206,9 @@ deleteAlbumFromArtist(artist, albumName){
 
   // artistName: nombre de artista(string)
   // retorna: los tracks interpretados por el artista con nombre artistName
-  //RARO POR DISCRIMINAR EL TIPO... ES POR DIFERENCIA DE REQUERIMIENTO CON LO QUE TIENE EL TEST
   getTracksMatchingArtist(artist) {
-    let artistTrack
-    if(typeof(artist)==="string"){
-        
-        artistTrack= this.getArtistByName(artist);
-        
-    } else{
-        
-        artistTrack= this.getArtistById(artist.getId());
-        
-    }
-    let res = this.collecTracks(artistTrack.getAlbums());
-    return res;    
+    return this.collecTracks(artist.getAlbums());    
   }
-
-
   //Dado un nombre de artista lo busca en el sistema, de encontrarlo lo retorna
   getArtistByName(artistName){
     return this.returnIfExists(this.artists.find((a) => a.name === artistName), "artista " + artistName);
