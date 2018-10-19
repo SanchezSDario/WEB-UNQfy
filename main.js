@@ -67,6 +67,7 @@ module.exports.help = function(){
   console.log("searchByName name");
   console.log("populateAlbumsForArtist artistName");
   console.log("getAlbumsForArtist artistName");
+  console.log("getLyricsForTrackByTitle trackTitle");
   return("That's all");
 }
 
@@ -164,7 +165,8 @@ module.exports.createPlaylist = function(playlistName, genresToInclude, maxDurat
 }
 
 //Raro que tenga que tratarlo como promesa desde el main,
-//Habria que ver tambien si puedo darle un ir generado con unqfy y no usar el que viene de spoty
+//Habria que ver tambien si puedo darle un id generado con unqfy y no usar el que viene de spoty
+//Deberia lanzar error si el artista no esta en unqfy o lo trae de Spoty y lo instancia?
 module.exports.populateAlbumsForArtist = function(artistName){
   let unqfy = getUNQfy();
   unqfy.populateAlbumsForArtist(artistName).then(
@@ -174,6 +176,17 @@ module.exports.populateAlbumsForArtist = function(artistName){
 module.exports.getAlbumsForArtist = function(artistName){
   let unqfy = getUNQfy();
   return unqfy.getAlbumsForArtist(artistName);
+}
+
+//Raro que tenga que tenga que tratarlo como promesa desde el main
+//Habria que manejar mejor los errores por si no esta el track en el sistema o confundis el nombre
+//  o si el track no tiene lyrics en MusixMatch
+module.exports.getLyricsForTrackByTitle = function(trackName){
+  let unqfy = getUNQfy();
+  let track = unqfy.searchByName(trackName).tracks[0];
+  track.getLyrics().then(
+    () => saveUNQfy(unqfy)
+  );
 }
 
 require("make-runnable");
