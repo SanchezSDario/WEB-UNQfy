@@ -65,6 +65,8 @@ module.exports.help = function(){
   console.log("getTracksMatchingArtist artistToMatch ");
   console.log("createPlaylist playlistName genresToInclude maxDuration ");
   console.log("searchByName name");
+  console.log("populateAlbumsForArtist artistName");
+  console.log("getAlbumsForArtist artistName");
   return("That's all");
 }
 
@@ -159,6 +161,19 @@ module.exports.createPlaylist = function(playlistName, genresToInclude, maxDurat
   let unqfy = getUNQfy();
   unqfy.createPlaylist(playlistName, genresToInclude, maxDuration);
   saveUNQfy(unqfy); 
+}
+
+//Raro que tenga que tratarlo como promesa desde el main,
+//Habria que ver tambien si puedo darle un ir generado con unqfy y no usar el que viene de spoty
+module.exports.populateAlbumsForArtist = function(artistName){
+  let unqfy = getUNQfy();
+  unqfy.populateAlbumsForArtist(artistName).then(
+    () => { saveUNQfy(unqfy);});
+}
+
+module.exports.getAlbumsForArtist = function(artistName){
+  let unqfy = getUNQfy();
+  return unqfy.getAlbumsForArtist(artistName);
 }
 
 require("make-runnable");

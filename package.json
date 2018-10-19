@@ -5,8 +5,11 @@
   "main": "main.js",
   "dependencies": {
     "chai": "^4.1.2",
+    "express": "^4.16.4",
     "make-runnable": "^1.3.6",
-    "picklify": "github:lwoites/picklify"
+    "picklify": "github:lwoites/picklify",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "eslint": "^4.19.1",

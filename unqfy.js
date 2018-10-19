@@ -1,6 +1,7 @@
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
+const rp = require('request-promise'); //para manejar api request como promesas
 const Artist = require('./artist.js');
 const Album = require('./album.js');
 const Track = require('./track.js');
@@ -135,6 +136,11 @@ deleteAlbumFromArtist(artist, albumName){
    return this.returnIfExists(artist.albums.find((a)=> a.name === albumName), "album " + albumName);
  }
 
+ //Dado un artista retorna los albumes que tiene
+ getAlbumsForArtist(artistName){
+   return this.getArtistByName(artistName).albums;
+ }
+
  //Dado un track busca las playlist que lo contengan para asi eliminarlo de las mismas.
  deleteTrackFromPlaylists(track){
    let playlistsWithTrack = this.playlists.filter((pl)=> pl.tracks.includes(track));
@@ -264,6 +270,47 @@ deleteAlbumFromArtist(artist, albumName){
   return res;
 }
 
+  populateAlbumsForArtist(artistName){
+    let addedArtistPromise = this.getArtistByNameFromSpoty(artistName);
+    let addedAlbumsPromise = this.getAlbumsOfArtistFromSpoty(addedArtistPromise);
+    return addedAlbumsPromise;
+  }
+
+  //Busca el artista por nombre en Spoty y se queda con el primer resultado
+  getArtistByNameFromSpoty(artistName){
+    const options = {
+      url: 'https://api.spotify.com/v1/search?q=' + artistName + '&type=artist',
+      headers: { Authorization: 'Bearer ' + 'BQD-TUlDyNr9Q13H7JJZGttRZVewHeNMgbuu--Gnf0_rIwOux2uLi8hcf0ilvd4joL3Y7nhmRj6PREjL7V6u5Ou2tKYb6r7JP5AuAeiHpKszvUB0AW58TXBqXuyV93l-Exb7ZmXOCkbm2d-Ohkl8Xy8AOWj6sSScYwVJ'
+               },
+      json: true,
+    };
+    return rp.get(options).then((response) => {
+      console.log("Artista encontrado! agregandolo al sistema...");
+      this.addArtist(response.artists.items[0]);
+      this.artists[this.artists.length - 1].id = response.artists.items[0].id
+      return response.artists.items[0];
+    }).catch(error => console.log(error));
+  }
+
+  //Agrega albumes a un artista proveniente de soty y encapsulado en una promesa
+  getAlbumsOfArtistFromSpoty(artistPromise){
+    return artistPromise.then((resp) => {
+      const options = {
+        url: 'https://api.spotify.com/v1/artists/'+ resp.id +'/albums',
+        headers: { Authorization: 'Bearer ' + 'BQD-TUlDyNr9Q13H7JJZGttRZVewHeNMgbuu--Gnf0_rIwOux2uLi8hcf0ilvd4joL3Y7nhmRj6PREjL7V6u5Ou2tKYb6r7JP5AuAeiHpKszvUB0AW58TXBqXuyV93l-Exb7ZmXOCkbm2d-Ohkl8Xy8AOWj6sSScYwVJ'
+                 },
+        json: true,
+      };
+      return rp.get(options).then((response) => {
+        console.log("Obteniendo albumes y agregandolos al artisa...");
+        response.items.forEach(album => this.addAlbum(resp.id, album));
+        console.log("Operacion completa, aqui esta la informacion completa!");
+        console.log(this.getArtistById(resp.id));
+        return response;
+      }).catch(error => console.log(error))
+    })
+  }
+
   save(filename) {
     const listenersBkp = this.listeners;
     this.listeners = [];
@@ -286,4 +333,3 @@ deleteAlbumFromArtist(artist, albumName){
 module.exports = {
   UNQfy,
 };
-
