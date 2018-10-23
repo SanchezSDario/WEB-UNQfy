@@ -67,7 +67,19 @@ class UNQfy {
      this.artists.splice(this.artists.indexOf(artistToDelete), 1);
      artistToDelete = null;
   }
-  
+
+  deleteArtistById(artistId){
+    let artistToDelete = this.getArtistById(artistId);
+    let artistAlbums = artistToDelete.albums;
+    let artistTracks = this.collecTracks(artistAlbums);
+    artistTracks.forEach((t)=> this.deleteTrackFromPlaylists(t));
+    artistAlbums.forEach((a)=> a.tracks.forEach((t)=> this.deleteTrackFromAlbum(a, t.name)));
+    artistToDelete.albums.forEach((a)=> this.deleteAlbumFromArtist(artistToDelete, a.name));
+    this.artists.splice(this.artists.indexOf(artistToDelete), 1);
+    artistToDelete = null;
+ }
+
+
   // albumData: objeto JS con los datos necesarios para crear un album
   //   albumData.name (string)
   //   albumData.year (number)
@@ -207,7 +219,7 @@ deleteAlbumFromArtist(artist, albumName){
     let resultadoTracks = listAlbums.map((fAlbum) => fAlbum.getTracks());
     let flatResultado = resultadoTracks.reduce(function(a, b) { 
         return a.concat(b);         
-    });
+    }, []);
     return flatResultado;
   }
 

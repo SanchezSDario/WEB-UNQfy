@@ -45,8 +45,11 @@ router.route('/artists').post(function(req, res){
     };
     let artist = unqfy.addArtist(artistData);
     unqfy.saveAsync('data.json').then(
-        () => res.json(artist.toJSON()) 
-    );
+        () => {
+            res.status(201);
+            res.json(artist.toJSON());
+        }
+    )
 });
 
 /*Obtener un artista por id
@@ -61,8 +64,23 @@ router.route('/artists').post(function(req, res){
 router.route('/artists/:artistId').get(function (req, res) {
     let unqfy = loadUnqfy();
     let artist = unqfy.getArtistById(parseInt(req.params.artistId));
+    res.status(200);
     res.json(artist.toJSON());
 });
+
+/* Borrar artista por id
+*/
+router.route('/artists/:artistId').delete(function(req, res){
+    let unqfy = loadUnqfy();
+    unqfy.deleteArtistById(parseInt(req.params.artistId));
+    res.status(204);
+    unqfy.saveAsync('data.json').then(
+        () => {
+            res.json()
+            console.log("Borrado artista con id " + req.params.artistId);
+        }
+    );
+})
 
 //Levanta servicio en el puerto 8080
 app.listen(port, () => console.log('Listening on ' + port));
