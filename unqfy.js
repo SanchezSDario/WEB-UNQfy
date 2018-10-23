@@ -2,6 +2,7 @@
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
 const rp = require('request-promise'); //para manejar api request como promesas
+const promisify = require('util').promisify;
 const Artist = require('./artist.js');
 const Album = require('./album.js');
 const Track = require('./track.js');
@@ -321,11 +322,30 @@ deleteAlbumFromArtist(artist, albumName){
     fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
   }
 
+  saveAsync(filename) {
+    const listenersBkp = this.listeners;
+    this.listeners = [];
+
+    const serializedData = picklify.picklify(this);
+
+    this.listeners = listenersBkp;
+    let writeFile = promisify(fs.writeFile); 
+    return writeFile(filename, JSON.stringify(serializedData, null, 2));
+  }
+
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
-    //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
     const classes = [UNQfy, Artist, Album, Track, Playlist];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
+  }
+
+  toJSON(){
+    let data = {
+      artists : this.artists,
+      playlists : this.playlists,
+      numId : this.numId
+    };
+    return data;
   }
 }
 

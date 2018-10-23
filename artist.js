@@ -60,6 +60,16 @@ class Artist{
     hasAlbum(id){
        return this.albums.map((a)=>a.id).includes(id);
     }
+
+    toJSON(){
+        let data = {
+            id : this.id,
+            name : this.name,
+            country : this.country,
+            albums : this.albums
+        };
+        return data;
+    }
 }
 
 module.exports = Artist;

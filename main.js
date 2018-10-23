@@ -1,5 +1,3 @@
-
-
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy'); // importamos el modulo unqfy
 
@@ -164,9 +162,7 @@ module.exports.createPlaylist = function(playlistName, genresToInclude, maxDurat
   saveUNQfy(unqfy); 
 }
 
-//Raro que tenga que tratarlo como promesa desde el main,
-//Habria que ver tambien si puedo darle un id generado con unqfy y no usar el que viene de spoty
-//Deberia lanzar error si el artista no esta en unqfy o lo trae de Spoty y lo instancia?
+//FIXME: Manejar el response para dejar un id consistente al de unqfy
 module.exports.populateAlbumsForArtist = function(artistName){
   let unqfy = getUNQfy();
   unqfy.populateAlbumsForArtist(artistName).then(
@@ -178,9 +174,7 @@ module.exports.getAlbumsForArtist = function(artistName){
   return unqfy.getAlbumsForArtist(artistName);
 }
 
-//Raro que tenga que tenga que tratarlo como promesa desde el main
-//Habria que manejar mejor los errores por si no esta el track en el sistema o confundis el nombre
-//  o si el track no tiene lyrics en MusixMatch
+//FIXME: Retornar string vacio caundo no hay lyrics o manejar error o le pifiaset al nombre/ no hay coincidencia
 module.exports.getLyricsForTrackByTitle = function(trackName){
   let unqfy = getUNQfy();
   let track = unqfy.searchByName(trackName).tracks[0];

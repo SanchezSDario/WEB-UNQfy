@@ -66,6 +66,17 @@ class Album{
     hasTrack(id){
         return this.tracks.map((t)=>t.id).includes(id);
     }
+
+    toJSON(){
+        let data = {
+            id : this.id,
+            name : this.name,
+            year : this.year,
+            tracks : this.tracks,
+            composers : this.composers
+        };
+        return data;
+    }
 }
 
 module.exports = Album;

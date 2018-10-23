@@ -3,18 +3,23 @@ const fs = require('fs');
 const promisify = require('util').promisify;
 const writeFile = promisify(fs.writeFile);
 
+const unqmod = require('./unqfy'); // importamos el modulo unqfy
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const port = process.argv[2] || 8080;
-const FILES_DIR = './data';
 
 let app = express();
 let router = express.Router();
 
-let id = 0;
-function generateId(){
-    return id += 1;
+// Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
+function loadUnqfy(){
+    let unqfy = new unqmod.UNQfy();
+        if (fs.existsSync('data.json')) {
+            unqfy = unqmod.UNQfy.load('data.json');
+        }
+    return unqfy;
 }
 
 app.use(bodyParser.json());
@@ -24,6 +29,7 @@ app.use('/api', router);
 
 /*Agregar un artista
     TODO: 
+        //Ojo con ver donde va el error si al rest o desde unqfy
         * Chequear artista para ver si ya esta agregado y lanzar error. 409
         * Chequear URL para ver si es invalida o no y lanza error. 404
         * Chequear body del JSON para comprobar si es valido o no y lanzar error. 400
@@ -32,47 +38,30 @@ app.use('/api', router);
 */
 router.route('/artists').post(function(req, res){
     const fileData = req.body;
-    const fullPath = `${FILES_DIR}/artists`;
-
-    writeFile(fullPath, fileData).then( ()=> {
-        res.status(201);
-        res.json({
-            id: generateId(),
-            name: fileData.name,
-            country: fileData.country,
-            albums: []
-        });
-    }).catch((error) => console.log(error));
-    //catch((error) => {...})
+    let unqfy = loadUnqfy();
+    let artistData = {
+        name: fileData.name,
+        country: fileData.country
+    };
+    let artist = unqfy.addArtist(artistData);
+    unqfy.saveAsync('data.json').then(
+        () => res.json(artist.toJSON()) 
+    );
 });
 
 /*Obtener un artista por id
-    TODO: 
+    TODO:
+        //Ojo con ver donde va el error si al rest o desde unqfy
         * Chequear URL para ver si es invalida o no y lanza error. 404
         * Chequear id enviada para comprobar existencia de artista. 404
         * Chequear body del JSON para comprobar si es valido o no y lanzar error. 400
         * Chequear si faltan algun parametro en el JSON y lanzar error. 400
         * Lanzar error de fallo inserperado. 500
 */
-router.route('/api/artists/:artistId').get(function (req, res) {
-    const readFile = promisify(fs.readFile);
-    const fullPath = '/api/artists/';
-
-    readFile(fullPath).then( (data) => {
-        res.status(200);
-        res.json({
-            id: data.id,
-            name: data.name,
-            country: data.country,
-            albums: data.albums
-        });
-    }).catch((err) => {
-        res.status(404);
-        res.json({
-            msg: 'File not Found',
-            error: err,
-        });
-    });
+router.route('/artists/:artistId').get(function (req, res) {
+    let unqfy = loadUnqfy();
+    let artist = unqfy.getArtistById(parseInt(req.params.artistId));
+    res.json(artist.toJSON());
 });
 
 //Levanta servicio en el puerto 8080

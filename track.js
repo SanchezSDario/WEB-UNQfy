@@ -77,7 +77,7 @@ class Track{
         }).catch((error) => console.log(error));
     }
 
-    //TODO HACER ALGO SI NO TIENE LYRICS EN MUSIXMATCH, ME PASÓ XD
+    //FIXME: Retornar string vacio caundo no hay lyrics o manejar error
     getLyricsOfTrackByIdFromMusixMatch(baseUrl, promise){
         return promise.then((response) =>{
             console.log("Se obtendran los lyrics del track con id " + response);
@@ -95,6 +95,17 @@ class Track{
                 }).catch((error) => console.log(error));
             }
         );
+    }
+
+    toJSON(){
+        let data = {
+            id : this.id,
+            name : this.name,
+            duration : this.duration,
+            genres : this.genres,
+            lyrics : this.lyrics
+        };
+        return data;
     }
 }
 
