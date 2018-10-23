@@ -104,6 +104,22 @@ class UNQfy {
     albumToDelete =null;
   }
 
+  deleteAlbumById(albumId){
+    let albumName = this.getAlbumById(albumId).name
+    let artistWithAlbum = this.getArtistByAlbumId(albumId);
+    let albumToDelete = this.getAlbumInArtist(artistWithAlbum, albumName);
+    let tracksFromAlbumToDelete = albumToDelete.tracks;
+    tracksFromAlbumToDelete.forEach((t)=> this.deleteTrackFromPlaylists(t));
+    albumToDelete.tracks.forEach((t)=> this.deleteTrackFromAlbum(albumToDelete, t.name));
+    this.deleteAlbumFromArtist(artistWithAlbum, albumToDelete.name);
+    albumToDelete =null;
+  }
+
+  getArtistByAlbumId(albumId){
+    let album = this.artists.find((artist) => artist.hasAlbum(albumId));
+    return this.returnIfExists(album, "Album");
+  }
+
   // trackData: objeto JS con los datos necesarios para crear un track
   //   trackData.name (string)
   //   trackData.duration (number)
@@ -231,6 +247,13 @@ deleteAlbumFromArtist(artist, albumName){
   //Dado un nombre de artista lo busca en el sistema, de encontrarlo lo retorna
   getArtistByName(artistName){
     return this.returnIfExists(this.artists.find((a) => a.name === artistName), "artista " + artistName);
+  }
+
+  //Dado un nombre busca albumes que contengan estos caracteres, retorna una lista de albumes que matchearon
+  getAlbumsByName(albumName){
+    let allAlbums = this.collectAlbums();
+    let filtered = allAlbums.filter((album) => album.getName().toLowerCase().includes(albumName.toLowerCase()));
+    return filtered;
   }
 
   // name: nombre de la playlist

@@ -37,17 +37,19 @@ app.use('/api', router);
         * Lanzar error de fallo inserperado. 500
 */
 router.route('/artists').post(function(req, res){
-    const fileData = req.body;
+    const data = req.body;
     let unqfy = loadUnqfy();
     let artistData = {
-        name: fileData.name,
-        country: fileData.country
+        name: data.name,
+        country: data.country
     };
     let artist = unqfy.addArtist(artistData);
     unqfy.saveAsync('data.json').then(
         () => {
             res.status(201);
             res.json(artist.toJSON());
+            console.log("Agregado un nuevo artista con los siguientes datos");
+            console.log(artist);
         }
     )
 });
@@ -66,20 +68,97 @@ router.route('/artists/:artistId').get(function (req, res) {
     let artist = unqfy.getArtistById(parseInt(req.params.artistId));
     res.status(200);
     res.json(artist.toJSON());
+    console.log("Datos del artista obtenido con el id " + req.params.artistId);
+    console.log(artist);
 });
 
 /* Borrar artista por id
+    TODO: Manejo de errores.
 */
 router.route('/artists/:artistId').delete(function(req, res){
     let unqfy = loadUnqfy();
     unqfy.deleteArtistById(parseInt(req.params.artistId));
-    res.status(204);
     unqfy.saveAsync('data.json').then(
         () => {
-            res.json()
+            res.status(204);
+            res.json();
             console.log("Borrado artista con id " + req.params.artistId);
         }
     );
+})
+
+/* Buscar artista por nombre
+    TODO: Manejo de errores.
+    FIXME: Usar un metodo que retorne una lista de artistas que contengan
+           el string buscado y que no sea sensible a mayusculas, minusculas.
+*/
+router.route('/artists').get(function(req, res){
+    let unqfy = loadUnqfy();
+    let artists = unqfy.getArtistByName(req.query.name);
+    res.status(200);
+    res.json(artists);
+    console.log("Resultado de la busqueda de artistas por nombre:");
+    console.log(artists);
+})
+
+
+/* Agregar un album a un artista
+    TODO: Manejo de errores.
+*/
+router.route('/albums').post(function(req, res){
+    const data = req.body;
+    let unqfy = loadUnqfy();
+    let albumData = {
+        artistId: data.artistId,
+        name: data.name,
+        year: data.year
+    };
+    let album = unqfy.addAlbum(albumData.artistId, albumData);
+    unqfy.saveAsync('data.json').then(
+        () =>{
+            res.status(201);
+            res.json(album.toJSON());
+            console.log("Agregado nuevo album con los siguientes datos:");
+            console.log(album);
+        });
+})
+
+/* Obtener un album por id
+    TODO: Manejo de errores.
+*/
+router.route('/albums/:albumId').get(function(req, res){
+    let unqfy = loadUnqfy();
+    let album = unqfy.getAlbumById(parseInt(req.params.albumId));
+    res.status(200);
+    res.json(album.toJSON());
+    console.log("Datos del album obtenidos con el id " + req.params.albumId);
+    console.log(album);
+})
+
+/* Borrar un album por id
+    TODO: Manejo de errores.
+*/
+router.route('/albums/:albumId').delete(function(req, res){
+    let unqfy = loadUnqfy();
+    unqfy.deleteAlbumById(parseInt(req.params.albumId));
+    unqfy.saveAsync('data.json').then(
+        () =>{
+            res.status(204);
+            res.json();
+            console.log("Borrado album con id " + req.params.albumId);
+        })
+})
+
+/* Buscar albumes por nombre
+    TODO: Manejo de errores.
+*/
+router.route('/albums').get(function(req, res){
+    let unqfy = loadUnqfy();
+    let albums = unqfy.getAlbumsByName(req.query.name);
+    res.status(200);
+    res.json(albums);
+    console.log("Obtenido albumes que matchean con el nombre " + req.query.name);
+    console.log(albums);
 })
 
 //Levanta servicio en el puerto 8080

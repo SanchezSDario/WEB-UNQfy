@@ -9,7 +9,7 @@
     "__00001__": {
       "artists": "__00002__",
       "playlists": "__00003__",
-      "numId": 10,
+      "numId": 15,
       "listeners": "__00004__"
     },
     "__00002__": {
@@ -19,7 +19,8 @@
       "3": "__00008__",
       "4": "__00009__",
       "5": "__00010__",
-      "6": "__00011__"
+      "6": "__00011__",
+      "7": "__00012__"
     },
     "__00003__": {},
     "__00004__": {},
@@ -27,51 +28,89 @@
       "id": 2,
       "name": "artista",
       "country": "pais",
-      "albums": "__00012__"
+      "albums": "__00013__"
     },
     "__00006__": {
       "id": 5,
       "name": "artistaaazzaaaza",
       "country": "pais",
-      "albums": "__00013__"
+      "albums": "__00014__"
     },
     "__00007__": {
       "id": 6,
       "name": "artistaaazzaaasñgoamsopgmasgmaza",
       "country": "pais",
-      "albums": "__00014__"
+      "albums": "__00015__"
     },
     "__00008__": {
       "id": 7,
       "name": "artistaacnczxnxzn",
       "country": "pais",
-      "albums": "__00015__"
+      "albums": "__00016__"
     },
     "__00009__": {
       "id": 8,
       "name": "artistaackjdflksjdlfkjsdlkfnczxnxzn",
       "country": "pais",
-      "albums": "__00016__"
+      "albums": "__00017__"
     },
     "__00010__": {
       "id": 9,
       "name": "artistaackjdflksjdlfkjjhghghghghghsdlkfnczxnxzn",
       "country": "pais",
-      "albums": "__00017__"
+      "albums": "__00018__"
     },
     "__00011__": {
       "id": 10,
       "name": "artistaackjdflksjdlfkjjhghghghghghsdlkfaaaaanczxnxzn",
       "country": "pais",
-      "albums": "__00018__"
+      "albums": "__00019__"
     },
-    "__00012__": {},
+    "__00012__": {
+      "id": 11,
+      "name": "Portishead",
+      "country": "Gran Bretaña",
+      "albums": "__00020__"
+    },
     "__00013__": {},
     "__00014__": {},
     "__00015__": {},
     "__00016__": {},
     "__00017__": {},
-    "__00018__": {}
+    "__00018__": {},
+    "__00019__": {},
+    "__00020__": {
+      "0": "__00021__",
+      "1": "__00022__",
+      "2": "__00023__"
+    },
+    "__00021__": {
+      "id": 13,
+      "name": "Third",
+      "year": 2008,
+      "tracks": "__00024__",
+      "composers": "__00025__"
+    },
+    "__00022__": {
+      "id": 14,
+      "name": "Porthishead",
+      "year": 2008,
+      "tracks": "__00026__",
+      "composers": "__00027__"
+    },
+    "__00023__": {
+      "id": 15,
+      "name": "Dummy",
+      "year": 2008,
+      "tracks": "__00028__",
+      "composers": "__00029__"
+    },
+    "__00024__": {},
+    "__00025__": {},
+    "__00026__": {},
+    "__00027__": {},
+    "__00028__": {},
+    "__00029__": {}
   },
   "types": {
     "__00001__": "UNQfy",
@@ -85,12 +124,23 @@
     "__00009__": "Artist",
     "__00010__": "Artist",
     "__00011__": "Artist",
-    "__00012__": "Array",
+    "__00012__": "Artist",
     "__00013__": "Array",
     "__00014__": "Array",
     "__00015__": "Array",
     "__00016__": "Array",
     "__00017__": "Array",
-    "__00018__": "Array"
+    "__00018__": "Array",
+    "__00019__": "Array",
+    "__00020__": "Array",
+    "__00021__": "Album",
+    "__00022__": "Album",
+    "__00023__": "Album",
+    "__00024__": "Array",
+    "__00025__": "Array",
+    "__00026__": "Array",
+    "__00027__": "Array",
+    "__00028__": "Array",
+    "__00029__": "Array"
   }
 }
