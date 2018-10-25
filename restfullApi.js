@@ -161,5 +161,22 @@ router.route('/albums').get(function(req, res){
     console.log(albums);
 })
 
+/* Buscar letra de una cancion
+    TODO: Manejo de errores.
+*/
+router.route('/lyrics').get(function(req, res){
+    let unqfy = loadUnqfy();
+    let track = unqfy.getTrackById(parseInt(req.query.trackId));
+    track.getLyrics().then(() =>{
+        res.status(200);
+        res.json({
+            Name: track.name,
+            lyrics: track.lyrics
+        });
+        console.log(`Obtenido lyrics para el track ${track.name}`);
+        console.log(track.lyrics);
+    });
+})
+
 //Levanta servicio en el puerto 8080
 app.listen(port, () => console.log('Listening on ' + port));
