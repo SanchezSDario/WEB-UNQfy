@@ -89,12 +89,10 @@ router.route('/artists/:artistId').delete(function(req, res){
 
 /* Buscar artista por nombre
     TODO: Manejo de errores.
-    FIXME: Usar un metodo que retorne una lista de artistas que contengan
-           el string buscado y que no sea sensible a mayusculas, minusculas.
 */
 router.route('/artists').get(function(req, res){
     let unqfy = loadUnqfy();
-    let artists = unqfy.getArtistByName(req.query.name);
+    let artists = unqfy.getArtistsByName(req.query.name);
     res.status(200);
     res.json(artists);
     console.log("Resultado de la busqueda de artistas por nombre:");

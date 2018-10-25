@@ -244,9 +244,15 @@ deleteAlbumFromArtist(artist, albumName){
   getTracksMatchingArtist(artist) {
     return this.collecTracks(artist.getAlbums());    
   }
+
   //Dado un nombre de artista lo busca en el sistema, de encontrarlo lo retorna
   getArtistByName(artistName){
     return this.returnIfExists(this.artists.find((a) => a.name === artistName), "artista " + artistName);
+  }
+
+  //Dado un nombre de artista lo busca en el sistema y retorna una lista d eposiblers resultados
+  getArtistsByName(artistName){
+    return this.artists.filter((artist) => artist.getName().toLowerCase().includes(artistName.toLowerCase()));
   }
 
   //Dado un nombre busca albumes que contengan estos caracteres, retorna una lista de albumes que matchearon
