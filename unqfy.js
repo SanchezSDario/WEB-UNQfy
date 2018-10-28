@@ -6,7 +6,8 @@ const promisify = require('util').promisify;
 const Artist = require('./artist.js');
 const Album = require('./album.js');
 const Track = require('./track.js');
-const Playlist = require('./playlist.js');
+const Playlist = require('./playlist.js'); 
+const ApiErros = require('./apiErrors.js');
 
 let ResourceAlreadyExistsError = require('./apiErrors.js').ResourceAlreadyExistsError;
 
@@ -71,14 +72,18 @@ class UNQfy {
   }
 
   deleteArtistById(artistId){
-    let artistToDelete = this.getArtistById(artistId);
-    let artistAlbums = artistToDelete.albums;
-    let artistTracks = this.collecTracks(artistAlbums);
-    artistTracks.forEach((t)=> this.deleteTrackFromPlaylists(t));
-    artistAlbums.forEach((a)=> a.tracks.forEach((t)=> this.deleteTrackFromAlbum(a, t.name)));
-    artistToDelete.albums.forEach((a)=> this.deleteAlbumFromArtist(artistToDelete, a.name));
-    this.artists.splice(this.artists.indexOf(artistToDelete), 1);
-    artistToDelete = null;
+    if(this.hasArtist(this.getArtistById(artistId))){
+        let artistToDelete = this.getArtistById(artistId);
+        let artistAlbums = artistToDelete.albums;
+        let artistTracks = this.collecTracks(artistAlbums);
+        artistTracks.forEach((t)=> this.deleteTrackFromPlaylists(t));
+        artistAlbums.forEach((a)=> a.tracks.forEach((t)=> this.deleteTrackFromAlbum(a, t.name)));
+        artistToDelete.albums.forEach((a)=> this.deleteAlbumFromArtist(artistToDelete, a.name));
+        this.artists.splice(this.artists.indexOf(artistToDelete), 1);
+        artistToDelete = null; 
+    }else {
+        throw new ResourceNotFoundError();
+    }
  }
 
 
@@ -208,9 +213,12 @@ deleteAlbumFromArtist(artist, albumName){
   // Compara el objeto pasado con undefined, si cumple la condicion lanza una excepcion, de lo contrario retorna el objeto
   returnIfExists(obj, objName){
     if(obj === undefined){
-      throw new Error("El/La " + objName + " no existe en el sistema");
+        // throw new Error("El/La " + objName + " no existe en el sistema"); 
+        throw new RelatedResourceNotFoundError();
     }
-    else{return obj;}
+    else{
+        return obj;
+    }
   }
 
   // Retorna los albumes en el sistema, que son la suma de todos los albumes de todos los artistas

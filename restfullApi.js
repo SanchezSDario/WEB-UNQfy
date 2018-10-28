@@ -46,7 +46,8 @@ router.route('/artists').post(function(req, res){
     let artistData = {
         name: data.name,
         country: data.country
-    };
+    }; 
+    //chequear si falta algun parametro antes de agregar json a unqfy
     let artist = unqfy.addArtist(artistData);
     unqfy.saveAsync('data.json').then(() => {
         res.status(201);
@@ -108,12 +109,14 @@ router.route('/artists').get(function(req, res){
 */
 router.route('/albums').post(function(req, res, next){
     const data = req.body;
-    let unqfy = loadUnqfy();
+    let unqfy = loadUnqfy(); 
+    if(data.name === undefined || data.year === undefined || data.artistId === undefined) throw new BadRequestError;
     let albumData = {
-        artistId: data.artistId,
+        artistId: data.artistId, //preguntar
         name: data.name,
         year: data.year
-    };
+    }; 
+    //chequer que el json este completo antes de agregar a unqfy
     let album = unqfy.addAlbum(albumData.artistId, albumData);
     unqfy.saveAsync('data.json').then(
         () =>{
