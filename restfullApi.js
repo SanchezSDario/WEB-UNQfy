@@ -21,7 +21,7 @@ function loadUnqfy(){
         if (fs.existsSync('data.json')) {
             unqfy = unqmod.UNQfy.load('data.json');
         }
-    return unqfy;
+    return unqfy;BadRequestError
 }
 
 app.use(bodyParser.json());
@@ -81,7 +81,9 @@ router.route('/artists/:artistId').get(function (req, res) {
 */
 router.route('/artists/:artistId').delete(function(req, res){
     let unqfy = loadUnqfy();
-    unqfy.deleteArtistById(parseInt(req.params.artistId));
+    let id = req.params.artistId
+    if(id != "undefined"){
+    unqfy.deleteArtistById(parseInt(id));
     unqfy.saveAsync('data.json').then(
         () => {
             res.status(204);
@@ -89,6 +91,9 @@ router.route('/artists/:artistId').delete(function(req, res){
             console.log("Borrado artista con id " + req.params.artistId);
         }
     );
+    } else {
+        throw new ResourceNotFoundError;
+    }
 })
 
 /* Buscar artista por nombre
@@ -132,11 +137,16 @@ router.route('/albums').post(function(req, res, next){
 */
 router.route('/albums/:albumId').get(function(req, res){
     let unqfy = loadUnqfy();
-    let album = unqfy.getAlbumById(parseInt(req.params.albumId));
+    let id = req.params.albumId
+    if(id != "undefined"){
+    let album = unqfy.getAlbumById(parseInt(id));
     res.status(200);
     res.json(album.toJSON());
     console.log("Datos del album obtenidos con el id " + req.params.albumId);
     console.log(album);
+    } else {
+        throw new ResourceNotFoundError;
+    }
 })
 
 /* Borrar un album por id
@@ -144,13 +154,18 @@ router.route('/albums/:albumId').get(function(req, res){
 */
 router.route('/albums/:albumId').delete(function(req, res){
     let unqfy = loadUnqfy();
-    unqfy.deleteAlbumById(parseInt(req.params.albumId));
+    let id = req.params.albumId
+    if(id != "undefined"){
+    unqfy.deleteAlbumById(parseInt(id));
     unqfy.saveAsync('data.json').then(
         () =>{
             res.status(204);
             res.json();
             console.log("Borrado album con id " + req.params.albumId);
         })
+    } else {
+        throw new ResourceNotFoundError;
+    }
 })
 
 /* Buscar albumes por nombre

@@ -1,4 +1,5 @@
 const Album = require('./album.js');
+const ApiErros = require('./apiErrors.js');
 
 class Artist{
     constructor(_id, _name, _country){
@@ -52,7 +53,8 @@ class Artist{
             return album;
         }
         else{
-            throw new Error("El artista ya tiene un album con el id " + str(albumId));
+            //throw new Error("El artista ya tiene un album con el id " + str(albumId));
+            throw new ResourceAlreadyExistsError();
         }
     }
 

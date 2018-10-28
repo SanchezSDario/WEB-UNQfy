@@ -98,8 +98,8 @@ class UNQfy {
      - una propiedad year (number)
   */
     return this.getArtistById(artistId).addAlbum(this.generateID(), albumData);
-  }
   
+  }
   //Dado un artista y un album, elimina el album de ese artista 
   deleteAlbum(artistName, albumName){
     let artistWithAlbum = this.getArtistByName(artistName);

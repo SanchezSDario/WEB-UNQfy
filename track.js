@@ -1,4 +1,5 @@
 const rp = require('request-promise');
+const ApiErros = require('./apiErrors.js');
 
 class Track{
     constructor(_id, _name, _duration, _genres=[]){
@@ -53,6 +54,7 @@ class Track{
             return new Promise(() => this.lyrics);
         }
         else{
+            //podriamos poner un catch para la excepcion y que no sea un consolelog y en el finally realizar la busqueda en MusixMatch
             console.log("No hay lyrics! obteniendo datos de MusixMatch...")
             const BASE_URL = 'https://api.musixmatch.com/ws/1.1/';
             var trackIdPromise = this.getTrackIdByNameFromMusixMatch(BASE_URL);
