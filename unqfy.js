@@ -8,6 +8,8 @@ const Album = require('./album.js');
 const Track = require('./track.js');
 const Playlist = require('./playlist.js');
 
+let ResourceAlreadyExistsError = require('./apiErrors.js').ResourceAlreadyExistsError;
+
 class UNQfy {
 
   constructor(){
@@ -42,13 +44,13 @@ class UNQfy {
   
   let artistToAdd = new Artist(this.generateID(), artistData.name, artistData.country);
 
-  
     if(!this.hasArtist(artistToAdd)){
-            this.artists.push(artistToAdd);
-            return artistToAdd;
-        } else {
-            throw new Error("El artista " + artistToAdd.getName() + " ya esta incluido");
-        }
+      this.artists.push(artistToAdd);
+      return artistToAdd;
+    }else{
+      //throw new Error("El artista ya se encuentra en el sistema");
+        throw new ResourceAlreadyExistsError();
+    }
   }     
 
   hasArtist(artist){

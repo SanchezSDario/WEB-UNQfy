@@ -1,7 +1,6 @@
 //Requerimientos y configuracion para que funque la api
 const fs = require('fs');
 const promisify = require('util').promisify;
-const writeFile = promisify(fs.writeFile);
 
 const unqmod = require('./unqfy'); // importamos el modulo unqfy
 
@@ -12,6 +11,9 @@ const port = process.argv[2] || 8080;
 
 let app = express();
 let router = express.Router();
+
+let ResourceAlreadyExistsError = require('./apiErrors.js').ResourceAlreadyExistsError;
+let BadRequestError = require('./apiErrors.js').BadRequestError;
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function loadUnqfy(){
@@ -24,6 +26,7 @@ function loadUnqfy(){
 
 app.use(bodyParser.json());
 app.use('/api', router);
+app.use(errorHandler);
 
 //Servicios que provee la api
 
@@ -39,20 +42,20 @@ app.use('/api', router);
 router.route('/artists').post(function(req, res){
     const data = req.body;
     let unqfy = loadUnqfy();
+    if(data.name === undefined || data.country === undefined) throw new BadRequestError;
     let artistData = {
         name: data.name,
         country: data.country
     };
     let artist = unqfy.addArtist(artistData);
-    unqfy.saveAsync('data.json').then(
-        () => {
-            res.status(201);
-            res.json(artist.toJSON());
-            console.log("Agregado un nuevo artista con los siguientes datos");
-            console.log(artist);
-        }
-    )
-});
+    unqfy.saveAsync('data.json').then(() => {
+        res.status(201);
+        res.json(artist.toJSON());
+        console.log("Agregado un nuevo artista con los siguientes datos");
+        console.log(artist);
+    });
+})
+
 
 /*Obtener un artista por id
     TODO:
@@ -103,7 +106,7 @@ router.route('/artists').get(function(req, res){
 /* Agregar un album a un artista
     TODO: Manejo de errores.
 */
-router.route('/albums').post(function(req, res){
+router.route('/albums').post(function(req, res, next){
     const data = req.body;
     let unqfy = loadUnqfy();
     let albumData = {
@@ -175,6 +178,18 @@ router.route('/lyrics').get(function(req, res){
         console.log(track.lyrics);
     });
 })
+
+function errorHandler(err, req, res, next){
+    if(err.type == 'entity.parse.failed'){
+        let error = new BadRequestError;
+        res.status(error.statusCode);
+        res.json(error.toJSON());
+    }
+    else{
+        res.status(err.statusCode);
+        res.json(err.toJSON());
+    }
+}
 
 //Levanta servicio en el puerto 8080
 app.listen(port, () => console.log('Listening on ' + port));
