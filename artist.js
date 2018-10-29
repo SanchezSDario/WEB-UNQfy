@@ -1,5 +1,5 @@
 const Album = require('./album.js');
-const ApiErros = require('./apiErrors.js');
+const ResourceAlreadyExistsError = require('./apiErrors.js').ResourceAlreadyExistsError;
 
 class Artist{
     constructor(_id, _name, _country){
@@ -47,22 +47,24 @@ class Artist{
     // Agrega un album al artista, si el id del album ya estaba en el sistema lanza una excepcion
     // de lo contrario crea un album, lo agrega al artista y lo retorna
     addAlbum(albumId, albumData){
-        if(! this.hasAlbum(albumId)){
+        if(!(this.hasAlbumById(albumId) || this.hasAlbumByName(albumData.name))){
             let album = new Album(albumId, albumData.name, albumData.year);
             this.albums.push(album);
             return album;
         }
-        else{
-            //throw new Error("El artista ya tiene un album con el id " + str(albumId));
-            throw new ResourceAlreadyExistsError();
-        }
+        else throw new ResourceAlreadyExistsError;
     }
 
     // Chequea la existencia de un album en el artista
-    hasAlbum(id){
+    hasAlbumById(id){
        return this.albums.map((a)=>a.id).includes(id);
     }
 
+    // Chequea la existencia de un album en el artista
+    hasAlbumByName(name){
+        return this.albums.map((a)=>a.name).includes(name);
+     }
+    
     toJSON(){
         let data = {
             id : this.id,

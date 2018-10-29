@@ -1,5 +1,4 @@
 const rp = require('request-promise');
-const ApiErros = require('./apiErrors.js');
 
 class Track{
     constructor(_id, _name, _duration, _genres=[]){

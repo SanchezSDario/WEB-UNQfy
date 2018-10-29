@@ -7,9 +7,10 @@ const Artist = require('./artist.js');
 const Album = require('./album.js');
 const Track = require('./track.js');
 const Playlist = require('./playlist.js'); 
-const ApiErros = require('./apiErrors.js');
 
 let ResourceAlreadyExistsError = require('./apiErrors.js').ResourceAlreadyExistsError;
+let RelatedResourceNotFoundError = require('./apiErrors.js').RelatedResourceNotFoundError;
+let ResourceNotFoundError = require('./apiErrors.js').ResourceNotFoundError;
 
 class UNQfy {
 
@@ -48,10 +49,8 @@ class UNQfy {
     if(!this.hasArtist(artistToAdd)){
       this.artists.push(artistToAdd);
       return artistToAdd;
-    }else{
-      //throw new Error("El artista ya se encuentra en el sistema");
-        throw new ResourceAlreadyExistsError();
     }
+    else throw new ResourceAlreadyExistsError;
   }     
 
   hasArtist(artist){
@@ -72,18 +71,14 @@ class UNQfy {
   }
 
   deleteArtistById(artistId){
-    if(this.hasArtist(this.getArtistById(artistId))){
-        let artistToDelete = this.getArtistById(artistId);
-        let artistAlbums = artistToDelete.albums;
-        let artistTracks = this.collecTracks(artistAlbums);
-        artistTracks.forEach((t)=> this.deleteTrackFromPlaylists(t));
-        artistAlbums.forEach((a)=> a.tracks.forEach((t)=> this.deleteTrackFromAlbum(a, t.name)));
-        artistToDelete.albums.forEach((a)=> this.deleteAlbumFromArtist(artistToDelete, a.name));
-        this.artists.splice(this.artists.indexOf(artistToDelete), 1);
-        artistToDelete = null; 
-    }else {
-        throw new ResourceNotFoundError();
-    }
+    let artistToDelete = this.getArtistById(artistId);
+    let artistAlbums = artistToDelete.albums;
+    let artistTracks = this.collecTracks(artistAlbums);
+    artistTracks.forEach((t)=> this.deleteTrackFromPlaylists(t));
+    artistAlbums.forEach((a)=> a.tracks.forEach((t)=> this.deleteTrackFromAlbum(a, t.name)));
+    artistToDelete.albums.forEach((a)=> this.deleteAlbumFromArtist(artistToDelete, a.name));
+    this.artists.splice(this.artists.indexOf(artistToDelete), 1);
+    artistToDelete = null; 
  }
 
 
@@ -97,8 +92,14 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    return this.getArtistById(artistId).addAlbum(this.generateID(), albumData);
-  
+    try{
+      console.log(this.generateID());
+      return this.getArtistById(artistId).addAlbum(this.generateID(), albumData);
+    }
+    catch(error){
+      if(error.statusCode === 409) throw error
+      else {throw new RelatedResourceNotFoundError;}
+    }
   }
   //Dado un artista y un album, elimina el album de ese artista 
   deleteAlbum(artistName, albumName){
@@ -112,7 +113,7 @@ class UNQfy {
   }
 
   deleteAlbumById(albumId){
-    let albumName = this.getAlbumById(albumId).name
+    let albumName = this.getAlbumById(albumId).name;
     let artistWithAlbum = this.getArtistByAlbumId(albumId);
     let albumToDelete = this.getAlbumInArtist(artistWithAlbum, albumName);
     let tracksFromAlbumToDelete = albumToDelete.tracks;
@@ -123,7 +124,7 @@ class UNQfy {
   }
 
   getArtistByAlbumId(albumId){
-    let album = this.artists.find((artist) => artist.hasAlbum(albumId));
+    let album = this.artists.find((artist) => artist.hasAlbumById(albumId));
     return this.returnIfExists(album, "Album");
   }
 
@@ -212,13 +213,8 @@ deleteAlbumFromArtist(artist, albumName){
   // la clase que se busca.
   // Compara el objeto pasado con undefined, si cumple la condicion lanza una excepcion, de lo contrario retorna el objeto
   returnIfExists(obj, objName){
-    if(obj === undefined){
-        // throw new Error("El/La " + objName + " no existe en el sistema"); 
-        throw new RelatedResourceNotFoundError();
-    }
-    else{
-        return obj;
-    }
+    if(obj === undefined) throw new ResourceNotFoundError;
+    else return obj;
   }
 
   // Retorna los albumes en el sistema, que son la suma de todos los albumes de todos los artistas
@@ -260,7 +256,7 @@ deleteAlbumFromArtist(artist, albumName){
     return this.returnIfExists(this.artists.find((a) => a.name === artistName), "artista " + artistName);
   }
 
-  //Dado un nombre de artista lo busca en el sistema y retorna una lista d eposiblers resultados
+  //Dado un nombre de artista lo busca en el sistema y retorna una lista de posibles resultados
   getArtistsByName(artistName){
     return this.artists.filter((artist) => artist.getName().toLowerCase().includes(artistName.toLowerCase()));
   }

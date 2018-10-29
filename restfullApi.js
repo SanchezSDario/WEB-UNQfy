@@ -13,7 +13,9 @@ let app = express();
 let router = express.Router();
 
 let ResourceAlreadyExistsError = require('./apiErrors.js').ResourceAlreadyExistsError;
+let ResourceNotFoundError = require('./apiErrors.js').ResourceNotFoundError;
 let BadRequestError = require('./apiErrors.js').BadRequestError;
+let InternalServerError = require('./apiErrors.js').InternalServerError;
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function loadUnqfy(){
@@ -30,15 +32,7 @@ app.use(errorHandler);
 
 //Servicios que provee la api
 
-/*Agregar un artista
-    TODO: 
-        //Ojo con ver donde va el error si al rest o desde unqfy
-        * Chequear artista para ver si ya esta agregado y lanzar error. 409
-        * Chequear URL para ver si es invalida o no y lanza error. 404
-        * Chequear body del JSON para comprobar si es valido o no y lanzar error. 400
-        * Chequear si faltan algun parametro en el JSON y lanzar error. 400
-        * Lanzar error de fallo inserperado. 500
-*/
+/*Agregar un artista :D*/
 router.route('/artists').post(function(req, res){
     const data = req.body;
     let unqfy = loadUnqfy();
@@ -46,8 +40,7 @@ router.route('/artists').post(function(req, res){
     let artistData = {
         name: data.name,
         country: data.country
-    }; 
-    //chequear si falta algun parametro antes de agregar json a unqfy
+    }
     let artist = unqfy.addArtist(artistData);
     unqfy.saveAsync('data.json').then(() => {
         res.status(201);
@@ -59,13 +52,9 @@ router.route('/artists').post(function(req, res){
 
 
 /*Obtener un artista por id
-    TODO:
-        //Ojo con ver donde va el error si al rest o desde unqfy
+    FIXME:
         * Chequear URL para ver si es invalida o no y lanza error. 404
-        * Chequear id enviada para comprobar existencia de artista. 404
-        * Chequear body del JSON para comprobar si es valido o no y lanzar error. 400
-        * Chequear si faltan algun parametro en el JSON y lanzar error. 400
-        * Lanzar error de fallo inserperado. 500
+          Puedo agarrar el error si mandaste una url mala ej atrist?
 */
 router.route('/artists/:artistId').get(function (req, res) {
     let unqfy = loadUnqfy();
@@ -76,8 +65,12 @@ router.route('/artists/:artistId').get(function (req, res) {
     console.log(artist);
 });
 
+
 /* Borrar artista por id
-    TODO: Manejo de errores.
+    FIXME:
+        * Chequear URL para ver si es invalida o no y lanza error. 404
+          Puedo agarrar el error si mandaste una url mala ej atrist?
+        * Chequear tipo de dato que llega para tirar RESOURCE_NOT_FOUND?
 */
 router.route('/artists/:artistId').delete(function(req, res){
     let unqfy = loadUnqfy();
@@ -96,11 +89,14 @@ router.route('/artists/:artistId').delete(function(req, res){
     }
 })
 
+
 /* Buscar artista por nombre
-    TODO: Manejo de errores.
+    FIXME:
+        * Deberia tirar RESOURCE_NOT_FOUND?
 */
 router.route('/artists').get(function(req, res){
     let unqfy = loadUnqfy();
+    //if(req.query.name === undefined) throw new BadRequestError;
     let artists = unqfy.getArtistsByName(req.query.name);
     res.status(200);
     res.json(artists);
@@ -110,18 +106,17 @@ router.route('/artists').get(function(req, res){
 
 
 /* Agregar un album a un artista
-    TODO: Manejo de errores.
+    FIXME:
 */
 router.route('/albums').post(function(req, res, next){
     const data = req.body;
     let unqfy = loadUnqfy(); 
     if(data.name === undefined || data.year === undefined || data.artistId === undefined) throw new BadRequestError;
     let albumData = {
-        artistId: data.artistId, //preguntar
+        artistId: data.artistId,
         name: data.name,
         year: data.year
-    }; 
-    //chequer que el json este completo antes de agregar a unqfy
+    };
     let album = unqfy.addAlbum(albumData.artistId, albumData);
     unqfy.saveAsync('data.json').then(
         () =>{
@@ -133,20 +128,16 @@ router.route('/albums').post(function(req, res, next){
 })
 
 /* Obtener un album por id
-    TODO: Manejo de errores.
+    FIXME:.
 */
 router.route('/albums/:albumId').get(function(req, res){
     let unqfy = loadUnqfy();
     let id = req.params.albumId
-    if(id != "undefined"){
     let album = unqfy.getAlbumById(parseInt(id));
     res.status(200);
     res.json(album.toJSON());
-    console.log("Datos del album obtenidos con el id " + req.params.albumId);
+    console.log("Datos del album obtenidos con el id " + id);
     console.log(album);
-    } else {
-        throw new ResourceNotFoundError;
-    }
 })
 
 /* Borrar un album por id
@@ -154,25 +145,20 @@ router.route('/albums/:albumId').get(function(req, res){
 */
 router.route('/albums/:albumId').delete(function(req, res){
     let unqfy = loadUnqfy();
-    let id = req.params.albumId
-    if(id != "undefined"){
+    let id = req.params.albumId;
     unqfy.deleteAlbumById(parseInt(id));
     unqfy.saveAsync('data.json').then(
         () =>{
             res.status(204);
             res.json();
-            console.log("Borrado album con id " + req.params.albumId);
+            console.log("Borrado album con id " + id);
         })
-    } else {
-        throw new ResourceNotFoundError;
-    }
-})
+    })
 
-/* Buscar albumes por nombre
-    TODO: Manejo de errores.
-*/
+/* Buscar albumes por nombre*/
 router.route('/albums').get(function(req, res){
     let unqfy = loadUnqfy();
+    //if(req.query.name === undefined) throw new BadRequestError;
     let albums = unqfy.getAlbumsByName(req.query.name);
     res.status(200);
     res.json(albums);
@@ -185,6 +171,7 @@ router.route('/albums').get(function(req, res){
 */
 router.route('/lyrics').get(function(req, res){
     let unqfy = loadUnqfy();
+    //if(req.query.trackId === undefined) throw new BadRequestError;
     let track = unqfy.getTrackById(parseInt(req.query.trackId));
     track.getLyrics().then(() =>{
         res.status(200);
@@ -199,13 +186,23 @@ router.route('/lyrics').get(function(req, res){
 
 function errorHandler(err, req, res, next){
     if(err.type == 'entity.parse.failed'){
+        //JSON INVALIDO
         let error = new BadRequestError;
         res.status(error.statusCode);
         res.json(error.toJSON());
     }
-    else{
+    if(err.statusCode === 409 ||
+       err.statusCode === 404 ||
+       err.statusCode === 400){
         res.status(err.statusCode);
         res.json(err.toJSON());
+    }
+    else{
+        //FALLO INESPERADO
+        console.log(err);
+        let error = new InternalServerError;
+        res.status(error.statusCode);
+        res.json(error.toJSON());
     }
 }
 
