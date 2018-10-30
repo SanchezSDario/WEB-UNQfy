@@ -97,7 +97,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Guns n' Roses\",\n  country\": \"USA\"\n}"
+							"raw": "{\n  \"name\": \"Guns n' Roses\",\n  \"country\": \"USA\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists",

@@ -6,7 +6,6 @@ class Album{
         this.name = _name;
         this.year = _year;
         this.tracks = [];
-        this.composers = [];
     }
 
     getId(){
@@ -23,10 +22,6 @@ class Album{
 
     getTracks(){
         return this.tracks;
-    }
-
-    getComposers(){
-        return this.composers;
     }
 
     setId(id){

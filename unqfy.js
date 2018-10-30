@@ -92,10 +92,7 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    try{
-      console.log(this.generateID());
-      return this.getArtistById(artistId).addAlbum(this.generateID(), albumData);
-    }
+    try{ return this.getArtistById(artistId).addAlbum(this.generateID(), albumData);}
     catch(error){
       if(error.statusCode === 409) throw error
       else {throw new RelatedResourceNotFoundError;}
@@ -220,9 +217,10 @@ deleteAlbumFromArtist(artist, albumName){
   // Retorna los albumes en el sistema, que son la suma de todos los albumes de todos los artistas
   collectAlbums(){
     let resultadoAlbums = this.artists.map((fArtist) => fArtist.albums);
+    console.log(resultadoAlbums);
     let flatResultado = resultadoAlbums.reduce(function(a, b) { 
-        return a.concat(b);         
-    });
+        return a.concat(b);
+    }, new Array);
     return flatResultado;
   }
 

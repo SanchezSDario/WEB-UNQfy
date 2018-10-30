@@ -26,6 +26,7 @@ function loadUnqfy(){
     return unqfy;BadRequestError
 }
 
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use('/api', router);
 app.use(errorHandler);
@@ -96,8 +97,9 @@ router.route('/artists/:artistId').delete(function(req, res){
 */
 router.route('/artists').get(function(req, res){
     let unqfy = loadUnqfy();
-    //if(req.query.name === undefined) throw new BadRequestError;
-    let artists = unqfy.getArtistsByName(req.query.name);
+    let artists
+    if(req.query.name === undefined) artists = unqfy.getArtistsByName("");
+    else artists = unqfy.getArtistsByName(req.query.name);
     res.status(200);
     res.json(artists);
     console.log("Resultado de la busqueda de artistas por nombre:");
@@ -158,8 +160,9 @@ router.route('/albums/:albumId').delete(function(req, res){
 /* Buscar albumes por nombre*/
 router.route('/albums').get(function(req, res){
     let unqfy = loadUnqfy();
-    //if(req.query.name === undefined) throw new BadRequestError;
-    let albums = unqfy.getAlbumsByName(req.query.name);
+    let albums;
+    if(req.query.name === undefined) albums = unqfy.getAlbumsByName("");
+    else albums = unqfy.getAlbumsByName(req.query.name);
     res.status(200);
     res.json(albums);
     console.log("Obtenido albumes que matchean con el nombre " + req.query.name);
@@ -185,6 +188,7 @@ router.route('/lyrics').get(function(req, res){
 })
 
 function errorHandler(err, req, res, next){
+    console.log(err);
     if(err.type == 'entity.parse.failed'){
         //JSON INVALIDO
         let error = new BadRequestError;
@@ -205,6 +209,12 @@ function errorHandler(err, req, res, next){
         res.json(error.toJSON());
     }
 }
+
+app.use((req, res, err) => {
+    let error = new ResourceNotFoundError;
+    res.status(error.statusCode);
+    res.json(error.toJSON());
+})
 
 //Levanta servicio en el puerto 8080
 app.listen(port, () => console.log('Listening on ' + port));
