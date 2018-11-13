@@ -47,12 +47,16 @@ class Artist{
     // Agrega un album al artista, si el id del album ya estaba en el sistema lanza una excepcion
     // de lo contrario crea un album, lo agrega al artista y lo retorna
     addAlbum(albumId, albumData){
-        if(!(this.hasAlbumById(albumId) || this.hasAlbumByName(albumData.name))){
+        if(!(this.hasAlbum(albumId, albumData.name))){
             let album = new Album(albumId, albumData.name, albumData.year);
             this.albums.push(album);
             return album;
         }
         else throw new ResourceAlreadyExistsError;
+    }
+
+    hasAlbum(albumId, albumName){
+        return this.hasAlbumById(albumId) || this.hasAlbumByName(albumName)
     }
 
     // Chequea la existencia de un album en el artista

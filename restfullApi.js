@@ -33,7 +33,6 @@ app.use(errorHandler);
 
 //Servicios que provee la api
 
-/*Agregar un artista :D*/
 router.route('/artists').post(function(req, res){
     const data = req.body;
     let unqfy = loadUnqfy();
@@ -51,12 +50,6 @@ router.route('/artists').post(function(req, res){
     });
 })
 
-
-/*Obtener un artista por id
-    FIXME:
-        * Chequear URL para ver si es invalida o no y lanza error. 404
-          Puedo agarrar el error si mandaste una url mala ej atrist?
-*/
 router.route('/artists/:artistId').get(function (req, res) {
     let unqfy = loadUnqfy();
     let artist = unqfy.getArtistById(parseInt(req.params.artistId));
@@ -67,12 +60,6 @@ router.route('/artists/:artistId').get(function (req, res) {
 });
 
 
-/* Borrar artista por id
-    FIXME:
-        * Chequear URL para ver si es invalida o no y lanza error. 404
-          Puedo agarrar el error si mandaste una url mala ej atrist?
-        * Chequear tipo de dato que llega para tirar RESOURCE_NOT_FOUND?
-*/
 router.route('/artists/:artistId').delete(function(req, res){
     let unqfy = loadUnqfy();
     let id = req.params.artistId
@@ -106,10 +93,6 @@ router.route('/artists').get(function(req, res){
     console.log(artists);
 })
 
-
-/* Agregar un album a un artista
-    FIXME:
-*/
 router.route('/albums').post(function(req, res, next){
     const data = req.body;
     let unqfy = loadUnqfy(); 
@@ -129,9 +112,6 @@ router.route('/albums').post(function(req, res, next){
         });
 })
 
-/* Obtener un album por id
-    FIXME:.
-*/
 router.route('/albums/:albumId').get(function(req, res){
     let unqfy = loadUnqfy();
     let id = req.params.albumId
@@ -142,9 +122,6 @@ router.route('/albums/:albumId').get(function(req, res){
     console.log(album);
 })
 
-/* Borrar un album por id
-    TODO: Manejo de errores.
-*/
 router.route('/albums/:albumId').delete(function(req, res){
     let unqfy = loadUnqfy();
     let id = req.params.albumId;
@@ -157,7 +134,6 @@ router.route('/albums/:albumId').delete(function(req, res){
         })
     })
 
-/* Buscar albumes por nombre*/
 router.route('/albums').get(function(req, res){
     let unqfy = loadUnqfy();
     let albums;
@@ -169,12 +145,8 @@ router.route('/albums').get(function(req, res){
     console.log(albums);
 })
 
-/* Buscar letra de una cancion
-    TODO: Manejo de errores.
-*/
 router.route('/lyrics').get(function(req, res){
     let unqfy = loadUnqfy();
-    //if(req.query.trackId === undefined) throw new BadRequestError;
     let track = unqfy.getTrackById(parseInt(req.query.trackId));
     track.getLyrics().then(() =>{
         res.status(200);

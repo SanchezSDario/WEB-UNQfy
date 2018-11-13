@@ -53,7 +53,6 @@ class Track{
             return new Promise(() => this.lyrics);
         }
         else{
-            //podriamos poner un catch para la excepcion y que no sea un consolelog y en el finally realizar la busqueda en MusixMatch
             console.log("No hay lyrics! obteniendo datos de MusixMatch...")
             const BASE_URL = 'https://api.musixmatch.com/ws/1.1/';
             var trackIdPromise = this.getTrackIdByNameFromMusixMatch(BASE_URL);
@@ -78,7 +77,6 @@ class Track{
         }).catch((error) => console.log(error));
     }
 
-    //FIXME: Retornar string vacio caundo no hay lyrics o manejar error
     getLyricsOfTrackByIdFromMusixMatch(baseUrl, promise){
         return promise.then((response) =>{
             console.log("Se obtendran los lyrics del track con id " + response);
@@ -93,7 +91,7 @@ class Track{
                 console.log("Obteniendo lyrics del track en cuestion...");
                 this.lyrics = resp.message.body.lyrics.lyrics_body;
                 console.log("Lyrics guardados con exito! intente obtenerlos nuevamente para verlos");
-                }).catch((error) => console.log(error));
+                }).catch((error) => this.lyrics = "Este track no tiene lyrics en nuestro sistema, lo sentimos :(");
             }
         );
     }

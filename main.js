@@ -162,11 +162,10 @@ module.exports.createPlaylist = function(playlistName, genresToInclude, maxDurat
   saveUNQfy(unqfy); 
 }
 
-//FIXME: Manejar el response para dejar un id consistente al de unqfy
 module.exports.populateAlbumsForArtist = function(artistName){
   let unqfy = getUNQfy();
   unqfy.populateAlbumsForArtist(artistName).then(
-    () => { saveUNQfy(unqfy);});
+    () => {saveUNQfy(unqfy);});
 }
 
 module.exports.getAlbumsForArtist = function(artistName){
@@ -174,7 +173,6 @@ module.exports.getAlbumsForArtist = function(artistName){
   return unqfy.getAlbumsForArtist(artistName);
 }
 
-//FIXME: Retornar string vacio caundo no hay lyrics o manejar error o le pifiaset al nombre/ no hay coincidencia
 module.exports.getLyricsForTrackByTitle = function(trackName){
   let unqfy = getUNQfy();
   let track = unqfy.searchByName(trackName).tracks[0];

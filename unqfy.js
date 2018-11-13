@@ -92,7 +92,7 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    try{ return this.getArtistById(artistId).addAlbum(this.generateID(), albumData);}
+    try{return this.getArtistById(artistId).addAlbum(this.generateID(), albumData)}
     catch(error){
       if(error.statusCode === 409) throw error
       else {throw new RelatedResourceNotFoundError;}
@@ -217,7 +217,6 @@ deleteAlbumFromArtist(artist, albumName){
   // Retorna los albumes en el sistema, que son la suma de todos los albumes de todos los artistas
   collectAlbums(){
     let resultadoAlbums = this.artists.map((fArtist) => fArtist.albums);
-    console.log(resultadoAlbums);
     let flatResultado = resultadoAlbums.reduce(function(a, b) { 
         return a.concat(b);
     }, new Array);
@@ -326,34 +325,33 @@ deleteAlbumFromArtist(artist, albumName){
   getArtistByNameFromSpoty(artistName){
     const options = {
       url: 'https://api.spotify.com/v1/search?q=' + artistName + '&type=artist',
-      headers: { Authorization: 'Bearer ' + 'BQD-TUlDyNr9Q13H7JJZGttRZVewHeNMgbuu--Gnf0_rIwOux2uLi8hcf0ilvd4joL3Y7nhmRj6PREjL7V6u5Ou2tKYb6r7JP5AuAeiHpKszvUB0AW58TXBqXuyV93l-Exb7ZmXOCkbm2d-Ohkl8Xy8AOWj6sSScYwVJ'
+      headers: { Authorization: 'Bearer ' + 'BQCIuuHK4RkWew5tADJH-Mqh5_tCItIdkiSKi8Ta5l-ZvdLUFj2UoE6mxdHHYh7KtxHG2y4ZBDTC_9aTt9v6Xr0EyckEniFsuL9iwVkFNAeFlWtdlBPB_LmS2sQvt1sK_pL_JR45Vfsfq0YJ2RxCb3-mGUmtZPM2f5Ls'
                },
       json: true,
     };
     return rp.get(options).then((response) => {
       console.log("Artista encontrado! agregandolo al sistema...");
-      this.addArtist(response.artists.items[0]);
-      this.artists[this.artists.length - 1].id = response.artists.items[0].id
-      return response.artists.items[0];
+      let artist = this.addArtist(response.artists.items[0]);
+      return ([response.artists.items[0], artist]);
     }).catch(error => console.log(error));
   }
 
   //Agrega albumes a un artista proveniente de soty y encapsulado en una promesa
   getAlbumsOfArtistFromSpoty(artistPromise){
-    return artistPromise.then((resp) => {
+    return artistPromise.then((arr) => {
       const options = {
-        url: 'https://api.spotify.com/v1/artists/'+ resp.id +'/albums',
-        headers: { Authorization: 'Bearer ' + 'BQD-TUlDyNr9Q13H7JJZGttRZVewHeNMgbuu--Gnf0_rIwOux2uLi8hcf0ilvd4joL3Y7nhmRj6PREjL7V6u5Ou2tKYb6r7JP5AuAeiHpKszvUB0AW58TXBqXuyV93l-Exb7ZmXOCkbm2d-Ohkl8Xy8AOWj6sSScYwVJ'
+        url: 'https://api.spotify.com/v1/artists/'+ arr[0].id +'/albums',
+        headers: { Authorization: 'Bearer ' + 'BQCIuuHK4RkWew5tADJH-Mqh5_tCItIdkiSKi8Ta5l-ZvdLUFj2UoE6mxdHHYh7KtxHG2y4ZBDTC_9aTt9v6Xr0EyckEniFsuL9iwVkFNAeFlWtdlBPB_LmS2sQvt1sK_pL_JR45Vfsfq0YJ2RxCb3-mGUmtZPM2f5Ls'
                  },
         json: true,
       };
       return rp.get(options).then((response) => {
         console.log("Obteniendo albumes y agregandolos al artisa...");
-        response.items.forEach(album => this.addAlbum(resp.id, album));
+        response.items.forEach(album => {if(! arr[1].hasAlbumByName(album.name))this.addAlbum(arr[1].id, album)});
         console.log("Operacion completa, aqui esta la informacion completa!");
-        console.log(this.getArtistById(resp.id));
+        console.log(this.getArtistById(arr[1].id));
         return response;
-      }).catch(error => console.log(error))
+      }).catch(error => console.log(error));
     })
   }
 
