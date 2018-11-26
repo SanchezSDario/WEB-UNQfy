@@ -1,0 +1,14 @@
+{
+  "name": "send-mail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sendMail.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "googleapis": "^35.0.0"
+  }
+}
