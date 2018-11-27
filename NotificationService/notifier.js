@@ -63,14 +63,8 @@ class Notifier{
       		console.log("Este es el estado del artista y sus subscriptores:")
       		console.log(artistSub);
       		return artistSub;
-      		}).catch(error =>{
-      			throw new RelatedResourceNotFoundError;
       		});
 	}
 }
-
-let notifier = new Notifier();
-notifier.addSubToAnArtist(1, "dariosebastiansanchez@gmail.com");
-notifier.addSubToAnArtist(1, "pablitoclavounclavito@gmail.com");
 
 module.exports = Notifier;

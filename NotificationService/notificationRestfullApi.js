@@ -10,10 +10,13 @@ const port = process.argv[2] || 5000;
 let app = express();
 let router = express.Router();
 
+const Notifier = require('./notifier.js');
+
 let ResourceAlreadyExistsError = require('./notificationApiErrors.js').ResourceAlreadyExistsError;
 let ResourceNotFoundError = require('./notificationApiErrors.js').ResourceNotFoundError;
 let BadRequestError = require('./notificationApiErrors.js').BadRequestError;
 let InternalServerError = require('./notificationApiErrors.js').InternalServerError;
+let RelatedResourceNotFoundError = require('./notificationApiErrors.js').RelatedResourceNotFoundError;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -22,9 +25,15 @@ app.use(errorHandler);
 
 let notifier = new Notifier();
 
-router.route('/subscribe').post(function(req, res){
+router.route('/subscribe').post(function(req, res, next){
     const data = req.body;
     if(data.artistId === undefined || data.email === undefined) throw new BadRequestError;
+    notifier.addSubToAnArtist(data.artistId, data.email).then(() =>{
+        res.status(200);
+        res.json({});
+    }).catch(error =>{
+        next(new RelatedResourceNotFoundError());
+    });
 })
 
 router.route('/hello').post(function(req, res){
