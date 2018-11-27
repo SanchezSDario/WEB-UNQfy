@@ -6,6 +6,7 @@ const ArtistSubs = require('./artistSubs.js');
 
 let ResourceAlreadyExistsError = require('./notificationApiErrors.js').ResourceAlreadyExistsError;
 let ResourceNotFoundError = require('./notificationApiErrors.js').ResourceNotFoundError;
+let RelatedResourceNotFoundError = require('./notificationApiErrors.js').RelatedResourceNotFoundError;
 
 class Notifier{
 
@@ -22,18 +23,13 @@ class Notifier{
 	}
 
 	addArtistSubs(artist){
-		if(! this.hasArtist(artist.id)){
-			let artistSub = new ArtistSubs(artist)
-			this.artistsSubs.push(artistSub);
-			return artistSub;
-			
-		}
-		else throw new ResourceAlreadyExistsError;
+		let artistSub = new ArtistSubs(artist)
+		this.artistsSubs.push(artistSub);
+		return artistSub;
 	}
 
-	//FIX_ME: Comunicarse con la pai de unqfy para saber si esta el artista
 	hasArtist(artistId){
-		return this.artistsSubs.map((artistSub) => {artistSub.artist.id;}).includes(artistId);
+		return this.artistsSubs.map((artistSub) => artistSub.artist.id).includes(artistId);
 	}
 	
 	getArtistSubById(artistId){
@@ -50,17 +46,26 @@ class Notifier{
       	}
       	return rp.get(options).then((response) => {
       		console.log("Artista encontrado!");
+      		let artistSub;
       		if(!this.hasArtist(artistId)){
-      			let artistSub = this.addArtistSubs(response);
+      			console.log("No hay un registro de subscripciones para este artista.");
+      			console.log("Felicidades! Eres el primer subscriptor de este artita");
+      			artistSub = this.addArtistSubs(response);
+      			console.log(`Subscribiendo ${sub} al artista ${artistSub.artist.name}`);
       			artistSub.addSub(sub);
       		}
       		else{
-      			this.getArtistSubById(artistId).addSub(sub);
+      			artistSub = this.getArtistSubById(artistId);
+      			console.log(`Subscribiendo ${sub} al artista ${artistSub.artist.name}`);
+      			artistSub.addSub(sub);
       		}
-      		console.log(this.artistsSubs);
-      		//let artistSub = this.addArtist(response.artists.items[0]);
-      		//return ([response.artists.items[0], artist]);
-    		}).catch(error => console.log(error));
+      		console.log(`${sub} subscripto al artista ${artistSub.artist.name}!`);
+      		console.log("Este es el estado del artista y sus subscriptores:")
+      		console.log(artistSub);
+      		return artistSub;
+      		}).catch(error =>{
+      			throw new RelatedResourceNotFoundError;
+      		});
 	}
 }
 
