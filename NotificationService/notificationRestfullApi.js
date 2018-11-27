@@ -20,6 +20,26 @@ app.use(bodyParser.json());
 app.use('/api', router);
 app.use(errorHandler);
 
+function loadNotifier(){
+}
+
+router.route('/subscribe').post(function(req, res){
+    const data = req.body;
+    let unqfy = loadNotifier();
+    if(data.artistId === undefined || data.email === undefined) throw new BadRequestError;
+    let artistData = {
+        name: data.name,
+        country: data.country
+    }
+    let artist = unqfy.addArtist(artistData);
+    unqfy.saveAsync('data.json').then(() => {
+        res.status(201);
+        res.json(artist.toJSON());
+        console.log("Agregado un nuevo artista con los siguientes datos");
+        console.log(artist);
+    });
+})
+
 function errorHandler(err, req, res, next){
     console.log(err);
     if(err.type == 'entity.parse.failed'){
