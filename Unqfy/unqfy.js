@@ -6,7 +6,8 @@ const promisify = require('util').promisify;
 const Artist = require('./artist.js');
 const Album = require('./album.js');
 const Track = require('./track.js');
-const Playlist = require('./playlist.js'); 
+const Playlist = require('./playlist.js');
+//const NotificationObserver = require('./notificationObserver.js');
 
 let ResourceAlreadyExistsError = require('./apiErrors.js').ResourceAlreadyExistsError;
 let RelatedResourceNotFoundError = require('./apiErrors.js').RelatedResourceNotFoundError;
@@ -17,6 +18,7 @@ class UNQfy {
   constructor(){
     this.artists = []
     this.playlists = []
+    //this.notificationObserver = new NotificationObserver;
     this.numId = 0;
   }
 

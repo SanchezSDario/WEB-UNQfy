@@ -4,6 +4,10 @@
 
 class ArtistSubs{
 
+	/*
+		DISCLAIMER: LOS ARTISTAS TIENEN LA ESTRUCTURA DEL TOJSON DEL MISMO, NO DEL OBJETO
+	*/
+
 	constructor(_artist){
 		this.artist = _artist;
 		this.subs = [];

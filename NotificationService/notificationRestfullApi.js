@@ -5,7 +5,7 @@ const promisify = require('util').promisify;
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const port = process.argv[2] || 8080;
+const port = process.argv[2] || 5000;
 
 let app = express();
 let router = express.Router();
@@ -20,24 +20,15 @@ app.use(bodyParser.json());
 app.use('/api', router);
 app.use(errorHandler);
 
-function loadNotifier(){
-}
+let notifier = new Notifier();
 
 router.route('/subscribe').post(function(req, res){
     const data = req.body;
-    let unqfy = loadNotifier();
     if(data.artistId === undefined || data.email === undefined) throw new BadRequestError;
-    let artistData = {
-        name: data.name,
-        country: data.country
-    }
-    let artist = unqfy.addArtist(artistData);
-    unqfy.saveAsync('data.json').then(() => {
-        res.status(201);
-        res.json(artist.toJSON());
-        console.log("Agregado un nuevo artista con los siguientes datos");
-        console.log(artist);
-    });
+})
+
+router.route('/hello').post(function(req, res){
+    console.log("Hello!");
 })
 
 function errorHandler(err, req, res, next){

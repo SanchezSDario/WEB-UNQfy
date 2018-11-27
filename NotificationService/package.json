@@ -18,6 +18,8 @@
   "homepage": "https://github.com/SanchezSDario/WEB-UNQfy#readme",
   "dependencies": {
     "express": "^4.16.4",
-    "googleapis": "^35.0.0"
+    "googleapis": "^35.0.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
   }
 }
