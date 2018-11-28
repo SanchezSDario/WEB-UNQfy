@@ -47,6 +47,18 @@ router.route('/unsubscribe').post(function(req, res, next){
     });
 })
 
+router.route('/notify').post(function(req, res, next){
+    const data = req.body;
+    if(data.artistId === undefined || data.subject === undefined || data.message === undefined) throw new BadRequestError;
+    notifier.notifyUpdateOfArtist(parseInt(data.artistId), data.subject, data.message).then(() =>{
+        console.log(`Subscriptores notificados!`);
+        res.status(200);
+        res.json({});
+    }).catch(error =>{
+        next(new RelatedResourceNotFoundError());
+    });
+})
+
 router.route('/subscriptions').get(function(req, res, next){
     if(req.query.artistId === undefined) throw new BadRequestError;
     notifier.getSubsFromArtist(parseInt(req.query.artistId)).then((response) =>{
