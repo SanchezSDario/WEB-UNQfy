@@ -47,6 +47,19 @@ router.route('/unsubscribe').post(function(req, res, next){
     });
 })
 
+router.route('/subscriptions').get(function(req, res, next){
+    if(req.query.artistId === undefined) throw new BadRequestError;
+    notifier.getSubsFromArtist(parseInt(req.query.artistId)).then((response) =>{
+        res.status(200);
+        res.json({
+            artistId: req.query.artistId,
+            subscriptors: response,
+        });
+    }).catch(error =>{
+        next(new RelatedResourceNotFoundError());
+    });
+})
+
 function errorHandler(err, req, res, next){
     console.log(err);
     if(err.type == 'entity.parse.failed'){

@@ -33,10 +33,7 @@ class Notifier{
 	}
 	
 	getArtistSubById(artistId){
-		try{
-			return this.artistsSubs.find((artistSub) => artistSub.artist.id === artistId);
-		}
-		catch(error){ throw new ResourceNotFoundError;}
+		return this.artistsSubs.find((artistSub) => artistSub.artist.id === artistId);
 	}
 
 	addSubToAnArtist(artistId, sub){
@@ -78,10 +75,27 @@ class Notifier{
       			artistSub = this.getArtistSubById(artistId);
       			console.log(`Desubscribiendo ${sub} al artista ${artistSub.artist.name}.`);
       			artistSub.removeSub(sub);
+      			console.log(`${sub} desubscripto al artista ${artistSub.artist.name}.`);
+      			console.log("Este es el estado del artista y sus subscriptores:")
+      			console.log(artistSub);
       		}
-      		console.log(`${sub} desubscripto al artista ${artistSub.artist.name}.`);
-      		console.log("Este es el estado del artista y sus subscriptores:")
-      		console.log(artistSub);
+      	});
+	}
+
+	getSubsFromArtist(artistId){
+		const options = {
+			url: 'http://localhost:8080/api/artists/'+ artistId,
+      		json: true,
+      	}
+      	return rp.get(options).then((response) => {
+      		console.log("Artista encontrado!");
+      		let artistSub;
+      		if(this.hasArtist(artistId)){
+      			artistSub = this.getArtistSubById(artistId);
+      			console.log(`Subscriptores del artista ${artistSub.artist.name}:`);
+      			console.log(artistSub);
+      			return artistSub.getSubs();
+      		}
       	});
 	}
 }
