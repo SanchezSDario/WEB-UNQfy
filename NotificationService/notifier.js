@@ -98,6 +98,25 @@ class Notifier{
       		}
       	});
 	}
+
+	deleteSubsFromArtist(artistId){
+		const options = {
+			url: 'http://localhost:8080/api/artists/'+ artistId,
+      		json: true,
+      	}
+      	return rp.get(options).then((response) => {
+      		console.log("Artista encontrado!");
+      		let artistSub;
+      		if(this.hasArtist(artistId)){
+      			artistSub = this.getArtistSubById(artistId);
+      			console.log(`Eliminando al artista ${artistSub.artist.name} de nuestro sistema`);
+      			console.log(`Todos los mails serán desubscriptos al mismo`);
+      			artistSub.deleteSubs();
+      			this.artistsSubs.splice(this.artistsSubs.indexOf(artistSub), 1);
+      			artistSub = null;
+      		}
+      	});
+	}
 }
 
 module.exports = Notifier;

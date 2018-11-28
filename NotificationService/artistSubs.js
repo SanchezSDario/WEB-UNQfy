@@ -32,6 +32,10 @@ class ArtistSubs{
 	removeSub(subscriptor){
 		if(this.hasSub(subscriptor)) this.subs.splice(this.subs.indexOf(subscriptor), 1)
 	}
+
+	deleteSubs(){
+		this.subs = [];
+	}
 }
 
 module.exports = ArtistSubs;

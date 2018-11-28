@@ -60,6 +60,17 @@ router.route('/subscriptions').get(function(req, res, next){
     });
 })
 
+router.route('/subscriptions').delete(function(req, res, next){
+    const data = req.body;
+    if(data.artistId === undefined) throw new BadRequestError;
+    notifier.deleteSubsFromArtist(data.artistId).then(() =>{
+        res.status(200);
+        res.json({});
+    }).catch(error =>{
+        next(new RelatedResourceNotFoundError());
+    });
+})
+
 function errorHandler(err, req, res, next){
     console.log(err);
     if(err.type == 'entity.parse.failed'){
