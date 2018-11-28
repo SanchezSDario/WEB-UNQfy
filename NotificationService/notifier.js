@@ -49,21 +49,40 @@ class Notifier{
       		let artistSub;
       		if(!this.hasArtist(artistId)){
       			console.log("No hay un registro de subscripciones para este artista.");
-      			console.log("Felicidades! Eres el primer subscriptor de este artita");
+      			console.log("Felicidades! Eres el primer subscriptor de este artita.");
       			artistSub = this.addArtistSubs(response);
       			console.log(`Subscribiendo ${sub} al artista ${artistSub.artist.name}`);
       			artistSub.addSub(sub);
       		}
       		else{
       			artistSub = this.getArtistSubById(artistId);
-      			console.log(`Subscribiendo ${sub} al artista ${artistSub.artist.name}`);
+      			console.log(`Subscribiendo ${sub} al artista ${artistSub.artist.name}.`);
       			artistSub.addSub(sub);
       		}
       		console.log(`${sub} subscripto al artista ${artistSub.artist.name}!`);
       		console.log("Este es el estado del artista y sus subscriptores:")
       		console.log(artistSub);
       		return artistSub;
-      		});
+      	});
+	}
+
+	removeSubFromArtist(artistId, sub){
+		const options = {
+			url: 'http://localhost:8080/api/artists/'+ artistId,
+      		json: true,
+      	}
+      	return rp.get(options).then((response) => {
+      		console.log("Artista encontrado!");
+      		let artistSub;
+      		if(this.hasArtist(artistId)){
+      			artistSub = this.getArtistSubById(artistId);
+      			console.log(`Desubscribiendo ${sub} al artista ${artistSub.artist.name}.`);
+      			artistSub.removeSub(sub);
+      		}
+      		console.log(`${sub} desubscripto al artista ${artistSub.artist.name}.`);
+      		console.log("Este es el estado del artista y sus subscriptores:")
+      		console.log(artistSub);
+      	});
 	}
 }
 

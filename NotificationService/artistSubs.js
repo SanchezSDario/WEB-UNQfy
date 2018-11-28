@@ -21,8 +21,16 @@ class ArtistSubs{
 		return this.subs;
 	}
 
+	hasSub(subscriptor){
+		return this.subs.includes(subscriptor);
+	}
+
 	addSub(subscriptor){
-		this.subs.push(subscriptor);
+		if(! this.hasSub(subscriptor)) this.subs.push(subscriptor);
+	}
+
+	removeSub(subscriptor){
+		if(this.hasSub(subscriptor)) this.subs.splice(this.subs.indexOf(subscriptor), 1)
 	}
 }
 

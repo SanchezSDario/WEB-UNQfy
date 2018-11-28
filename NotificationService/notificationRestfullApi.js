@@ -36,8 +36,15 @@ router.route('/subscribe').post(function(req, res, next){
     });
 })
 
-router.route('/hello').post(function(req, res){
-    console.log("Hello!");
+router.route('/unsubscribe').post(function(req, res, next){
+    const data = req.body;
+    if(data.artistId === undefined || data.email === undefined) throw new BadRequestError;
+    notifier.removeSubFromArtist(data.artistId, data.email).then(() =>{
+        res.status(200);
+        res.json({});
+    }).catch(error =>{
+        next(new RelatedResourceNotFoundError());
+    });
 })
 
 function errorHandler(err, req, res, next){
