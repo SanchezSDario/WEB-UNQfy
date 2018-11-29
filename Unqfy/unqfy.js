@@ -7,7 +7,7 @@ const Artist = require('./artist.js');
 const Album = require('./album.js');
 const Track = require('./track.js');
 const Playlist = require('./playlist.js');
-//const NotificationObserver = require('./notificationObserver.js');
+const NotificationObserver = require('./notificationObserver.js');
 
 let ResourceAlreadyExistsError = require('./apiErrors.js').ResourceAlreadyExistsError;
 let RelatedResourceNotFoundError = require('./apiErrors.js').RelatedResourceNotFoundError;
@@ -18,7 +18,7 @@ class UNQfy {
   constructor(){
     this.artists = []
     this.playlists = []
-    //this.notificationObserver = new NotificationObserver;
+    this.notificationObserver = new NotificationObserver(this);
     this.numId = 0;
   }
 
@@ -50,6 +50,7 @@ class UNQfy {
 
     if(!this.hasArtist(artistToAdd)){
       this.artists.push(artistToAdd);
+      this.notificationObserver.update(this);
       return artistToAdd;
     }
     else throw new ResourceAlreadyExistsError;
@@ -69,6 +70,7 @@ class UNQfy {
      artistAlbums.forEach((a)=> a.tracks.forEach((t)=> this.deleteTrackFromAlbum(a, t.name)));
      artistToDelete.albums.forEach((a)=> this.deleteAlbumFromArtist(artistToDelete, a.name));
      this.artists.splice(this.artists.indexOf(artistToDelete), 1);
+     this.notificationObserver.update(this);
      artistToDelete = null;
   }
 
@@ -80,7 +82,8 @@ class UNQfy {
     artistAlbums.forEach((a)=> a.tracks.forEach((t)=> this.deleteTrackFromAlbum(a, t.name)));
     artistToDelete.albums.forEach((a)=> this.deleteAlbumFromArtist(artistToDelete, a.name));
     this.artists.splice(this.artists.indexOf(artistToDelete), 1);
-    artistToDelete = null; 
+    this.notificationObserver.update(this);
+    artistToDelete = null;
  }
 
 
@@ -94,7 +97,11 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    try{return this.getArtistById(artistId).addAlbum(this.generateID(), albumData)}
+    try{
+        let album = this.getArtistById(artistId).addAlbum(this.generateID(), albumData);
+        this.notificationObserver.update(this);
+        return album;
+      }
     catch(error){
       if(error.statusCode === 409) throw error
       else {throw new RelatedResourceNotFoundError;}
@@ -380,7 +387,7 @@ deleteAlbumFromArtist(artist, albumName){
 
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
-    const classes = [UNQfy, Artist, Album, Track, Playlist];
+    const classes = [UNQfy, Artist, Album, Track, Playlist, NotificationObserver];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 
