@@ -9,19 +9,30 @@ class Logger{
 	}
 
 	activate(){
-		this.active = true;
+		return this.activatePromise().then(result => {
+			this.active = result;
+		})
 	}
 
 	deactivate(){
-		this.active = false;
+		return this.deactivatePromise().then(result => {
+			this.active = result;
+		})
+	}
+
+	activatePromise(){
+		return new Promise(function (resolve, reject){
+				resolve(true);
+		})
+	}
+
+	deactivatePromise(){
+		return new Promise(function (resolve, reject){
+				resolve(false);
+		})
 	}
 
 	getStatusOfUNQfy(){
-		const options = {
-			url: 'http://localhost:8080/api/artists?name',
-      		json: true,
-      	}
-
       	portfinder.basePort = 8080;
       	portfinder.highestPort = 8080;
 
@@ -29,15 +40,27 @@ class Logger{
     }
 
     getStatusOfNotifier(){
-		const options = {
-			url: 'http://localhost:5000/api/artists?name',
-      		json: true,
-      	}
-
     	portfinder.basePort = 5000;
       	portfinder.highestPort = 5000;
 
 		return portfinder.getPortPromise();
+    }
+
+    log(texto){
+    	if(this.active){
+    		const options = {
+				method: 'POST',
+				uri: 'https://hooks.slack.com/services/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',
+     			body: {
+     				text: texto
+     			},
+   				json: true,
+   			}
+
+   			return rp(options).then((response) => {
+     			console.log("Log enviado!");
+      		});
+    	}
     }
 }
 

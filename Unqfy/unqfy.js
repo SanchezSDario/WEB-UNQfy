@@ -115,6 +115,7 @@ class UNQfy {
     tracksFromAlbumToDelete.forEach((t)=> this.deleteTrackFromPlaylists(t));
     albumToDelete.tracks.forEach((t)=> this.deleteTrackFromAlbum(albumToDelete, t.name));
     this.deleteAlbumFromArtist(artistWithAlbum, albumToDelete.name);
+    this.notificationObserver.update(this);
     albumToDelete =null;
   }
 
@@ -126,6 +127,7 @@ class UNQfy {
     tracksFromAlbumToDelete.forEach((t)=> this.deleteTrackFromPlaylists(t));
     albumToDelete.tracks.forEach((t)=> this.deleteTrackFromAlbum(albumToDelete, t.name));
     this.deleteAlbumFromArtist(artistWithAlbum, albumToDelete.name);
+    this.notificationObserver.update(this);
     albumToDelete =null;
   }
 
@@ -146,8 +148,9 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-
-    return this.getAlbumById(albumId).addTrack(this.generateID(), trackData);
+    let track = this.getAlbumById(albumId).addTrack(this.generateID(), trackData);
+    this.notificationObserver.update(this);
+    return track;
   }
 
 
@@ -158,6 +161,7 @@ class UNQfy {
    let albumFromTheArtist = this.getAlbumInArtist(artistFromTheTrack, albumName);
    let trackToDelete = this.deleteTrackFromAlbum(albumFromTheArtist, trackName);
    this.deleteTrackFromPlaylists(trackToDelete);
+   this.notificationObserver.update(this);
    trackToDelete = null;
  }
 
@@ -232,6 +236,11 @@ deleteAlbumFromArtist(artist, albumName){
     return flatResultado;
   }
 
+  //Retorna los tracks en el sistema, que son la suma de todos los tracks de todos los albumes de todos los artistas... todo
+  allTracks(){
+    return this.collecTracks(this.collectAlbums());
+  }
+
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres) {
@@ -247,7 +256,7 @@ deleteAlbumFromArtist(artist, albumName){
     let resultadoTracks = listAlbums.map((fAlbum) => fAlbum.getTracks());
     let flatResultado = resultadoTracks.reduce(function(a, b) { 
         return a.concat(b);         
-    }, []);
+    }, new Array);
     return flatResultado;
   }
 
