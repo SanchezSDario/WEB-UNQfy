@@ -20,6 +20,13 @@ class Logger{
 		})
 	}
 
+	getStatus(){
+		let active = this.active
+		return new Promise(function (resolve, reject){
+			resolve(active);
+		})
+	}
+
 	activatePromise(){
 		return new Promise(function (resolve, reject){
 				resolve(true);
@@ -60,9 +67,6 @@ class Logger{
    			return rp(options).then((response) => {
      			console.log("Log enviado!");
       		});
-    	}
-    	else{
-    		return promisify(() =>{});
     	}
     }
 }

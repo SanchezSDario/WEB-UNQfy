@@ -75,12 +75,17 @@ router.route('/notifierStatus').get(function(req, res, next){
 
 router.route('/log').post(function(req, res, next){
 	const data = req.body;
-	logger.log(data.text).then(() => {
-		res.status(200);
-		res.json({
-			information: "Log enviado a Slack!"
-		});
-	});
+	logger.getStatus().then(response => {
+		if(response){
+			logger.log(data.text).then(() => {
+				res.status(200);
+				res.json({
+					information: "Log enviado a Slack!"
+				});
+			});
+		}
+	})
+	
 })
 
 app.listen(port, () => console.log('Listening on ' + port));
