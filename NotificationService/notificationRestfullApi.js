@@ -79,7 +79,9 @@ router.route('/subscriptions').delete(function(req, res, next){
         res.status(200);
         res.json({});
     }).catch(error =>{
-        next(new RelatedResourceNotFoundError());
+        console.log(`Eliminando al artista con id ${data.artistId} de nuestro sistema`);
+        console.log(`Todos los mails serán desubscriptos al mismo`);
+        //next(new RelatedResourceNotFoundError());
     });
 })
 

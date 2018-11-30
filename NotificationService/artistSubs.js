@@ -62,7 +62,7 @@ class ArtistSubs{
 	sendMail(subscriptor, subject, mensaje){
 		const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
     	const messageParts = [
-    		`To: ${subscriptor}`,
+    		`To: <${subscriptor}>`,
       		'Content-Type: text/html; charset=utf-8',
       		'MIME-Version: 1.0',
       		`Subject: ${utf8Subject}`,

@@ -115,7 +115,7 @@ class Notifier{
       			this.artistsSubs.splice(this.artistsSubs.indexOf(artistSub), 1);
       			artistSub = null;
       		}
-      	});
+      	})
 	}
 
 	notifyUpdateOfArtist(artistId, subject, message){
