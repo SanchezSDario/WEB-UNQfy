@@ -61,6 +61,9 @@ class Logger{
      			console.log("Log enviado!");
       		});
     	}
+    	else{
+    		return promisify(() =>{});
+    	}
     }
 }
 

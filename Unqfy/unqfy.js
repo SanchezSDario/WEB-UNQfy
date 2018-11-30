@@ -18,7 +18,8 @@ class UNQfy {
   constructor(){
     this.artists = []
     this.playlists = []
-    this.notificationObserver = new NotificationObserver(this);
+    this.notificationObserver = new NotificationObserver();
+    this.notificationObserver.addObservable(this);
     this.numId = 0;
   }
 

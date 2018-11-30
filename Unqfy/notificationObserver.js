@@ -3,12 +3,16 @@ const rp = require('request-promise');
 
 class NotificationObserver{
 
-	constructor(_unqfy){
-		if(_unqfy !== undefined){
-			this.artists = _unqfy.getArtists();
-			this.albums = _unqfy.collectAlbums();
-			this.tracks = _unqfy.allTracks();
-		}
+	constructor(){
+		this.artists = [];
+		this.albums = [];
+		this.tracks = [];
+	}
+
+	addObservable(unqfy){
+		this.artists = unqfy.getArtists().concat([]);
+		this.albums = unqfy.collectAlbums().concat([]);
+		this.tracks = unqfy.allTracks().concat([]);
 	}
 
 	update(unqfy){
@@ -21,14 +25,10 @@ class NotificationObserver{
 	}
 
 	handleAddArtist(unqfy){
-		console.log("Artists");
-		console.log(this.artists);
-		console.log("unqfy");
-		console.log(unqfy.getArtists());
-		console.log(this.artists.length < unqfy.getArtists().length);
 		if(this.artists.length < unqfy.getArtists().length){
 			this.artists = unqfy.getArtists();
 			this.logAddedArtist(unqfy);
+			this.artists = unqfy.getArtists().concat([]);
 		}
 	}
 
@@ -36,6 +36,7 @@ class NotificationObserver{
 		if(this.artists.length > unqfy.getArtists().length){
 			this.notifyRemovedArtist(unqfy);
 			this.logRemovedArtist(unqfy);
+			this.artists = unqfy.getArtists().concat([]);
       	}
 	}
 
@@ -43,42 +44,47 @@ class NotificationObserver{
 		if(this.albums.length < unqfy.collectAlbums().length){
 			this.notifyAddedAlbum(unqfy);
 			this.logAddedAlbum(unqfy);
+			this.albums = unqfy.collectAlbums().concat([]);
       	}
 	}
 
 	handleRemoveAlbum(unqfy){
 		if(this.albums.length > unqfy.collectAlbums().length){
 			this.logRemovedAlbum(unqfy);
+			this.albums = unqfy.collectAlbums().concat([]);
       	}	
 	}
 
 	handleAddTrack(unqfy){
 		if(this.tracks.length < unqfy.allTracks().length){
 			this.logAddedTrack(unqfy);
+			this.tracks = unqfy.allTracks().concat([]);
 		}
 	}
 
 	handleRemoveTrack(unqfy){
 		if(this.tracks.length > unqfy.allTracks().length){
 			this.logRemovedTrack(unqfy);
+			this.tracks = unqfy.allTracks().concat([]);
 		}
 	}
 
 	logAddedArtist(unqfy){
 		console.log("log add artist")
 		let artist = unqfy.getArtists()[unqfy.getArtists().length - 1];
+		let texto = `Artista agregado: ${artist.getName()}` 
 
 		const options = {
 			method: 'POST',
 			uri: 'http://localhost:5001/api/log',
      		body: {
-     			text: `Artista agregado: ${artist.getName()}`
+     			text: texto
      		},
    			json: true,
    		}
 
    		rp(options).then((response) => {
-     		console.log("Log enviado!");
+     		console.log("Log enviado: add artist!");
       	});
 	}
 
@@ -93,24 +99,25 @@ class NotificationObserver{
    		}
       	
       	rp(options).then((response) => {
-      		this.artists = unqfy.getArtists();
+      		console.log("Notificacion enviada: remove artist!");
       	});
 	}
 
 	logRemovedArtist(unqfy){
 		let artist = this.artists.filter(artist => unqfy.getArtists().indexOf(artist) < 0)[0];
+		let texto = `Artista borrado: ${artist.getName()}` 
 
 		const options = {
 			method: 'POST',
 			uri: 'http://localhost:5001/api/log',
      		body: {
-     			text: `Artista borrado: ${artist.getName()}`
+     			text: texto
      		},
    			json: true,
    		}
 
    		rp(options).then((response) => {
-     		console.log("Log enviado!");
+     		console.log("Log enviado: remove artist!");
       	});
 	}
 
@@ -130,75 +137,79 @@ class NotificationObserver{
    		}
 
    		rp(options).then((response) => {
-     		this.albums = unqfy.collectAlbums();
+     		console.log("Notificacion enviada: add album!");
       	});
 	}
 
 	logAddedAlbum(unqfy){
 		let album = unqfy.collectAlbums()[unqfy.collectAlbums().length - 1];
+		let texto = `Album agregado: ${album.getName()}`
 
 		const options = {
 			method: 'POST',
 			uri: 'http://localhost:5001/api/log',
      		body: {
-     			text: `Album agregado: ${album.getName()}`
+     			text: texto
      		},
    			json: true,
    		}
 
    		rp(options).then((response) => {
-     		console.log("Log enviado!");
+     		console.log("Log enviado: add album!");
       	});
 	}
 
 	logRemovedAlbum(unqfy){
 		let album = this.albums.filter(album => unqfy.collectAlbums().indexOf(album) < 0)[0]
+		let texto = `Album borrado: ${album.getName()}`
 
 		const options = {
 			method: 'POST',
 			uri: 'http://localhost:5001/api/log',
      		body: {
-     			text: `Album borrado: ${album.getName()}`
+     			text: texto
      		},
    			json: true,
    		}
 
    		rp(options).then((response) => {
-     		console.log("Log enviado!");
+     		console.log("Log enviado: remove album!");
       	});
 	}
 
 	logAddedTrack(unqfy){
 		let track = unqfy.allTracks()[unqfy.allTracks().length - 1];
+		let texto = `Track agregado: ${track.getName()}` 
 
 		const options = {
 			method: 'POST',
 			uri: 'http://localhost:5001/api/log',
      		body: {
-     			text: `Track agregado: ${track.getName()}`
+     			text: texto
      		},
    			json: true,
    		}
 
    		rp(options).then((response) => {
-     		console.log("Log enviado!");
+     		console.log("Log enviado: add track!");
       	});
 	}
 
 	logRemovedTrack(unqfy){
 		let track = this.tracks.filter(track => unqfy.allTracks().indexOf(track) < 0)[0]
+		let texto = `Track borrado: ${track.getName()}`
 
 		const options = {
 			method: 'POST',
 			uri: 'http://localhost:5001/api/log',
      		body: {
-     			text: `Track borrado: ${track.getName()}`
+     			text: texto
      		},
    			json: true,
    		}
 
    		rp(options).then((response) => {
-     		console.log("Log enviado!");
+     		console.log("Log enviado: remove track!");
       	});
 	}
 }
