@@ -5,7 +5,7 @@ const promisify = require('util').promisify;
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const port = process.argv[2] || 5000;
+const port = process.argv[2] || 5001;
 
 let app = express();
 let router = express.Router();
@@ -81,7 +81,6 @@ router.route('/subscriptions').delete(function(req, res, next){
     }).catch(error =>{
         console.log(`Eliminando al artista con id ${data.artistId} de nuestro sistema`);
         console.log(`Todos los mails serán desubscriptos al mismo`);
-        //next(new RelatedResourceNotFoundError());
     });
 })
 

@@ -40,15 +40,15 @@ class Logger{
 	}
 
 	getStatusOfUNQfy(){
-      	portfinder.basePort = 8080;
-      	portfinder.highestPort = 8080;
+      	portfinder.basePort = 5000;
+      	portfinder.highestPort = 5000;
 
 		return portfinder.getPortPromise();
     }
 
     getStatusOfNotifier(){
-    	portfinder.basePort = 5000;
-      	portfinder.highestPort = 5000;
+    	portfinder.basePort = 5001;
+      	portfinder.highestPort = 5001;
 
 		return portfinder.getPortPromise();
     }

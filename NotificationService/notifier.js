@@ -38,7 +38,7 @@ class Notifier{
 
 	addSubToAnArtist(artistId, sub){
 		const options = {
-			url: 'http://localhost:8080/api/artists/'+ artistId,
+			url: 'http://localhost:5000/api/artists/'+ artistId,
       		json: true,
       	}
       	return rp.get(options).then((response) => {
@@ -65,7 +65,7 @@ class Notifier{
 
 	removeSubFromArtist(artistId, sub){
 		const options = {
-			url: 'http://localhost:8080/api/artists/'+ artistId,
+			url: 'http://localhost:5000/api/artists/'+ artistId,
       		json: true,
       	}
       	return rp.get(options).then((response) => {
@@ -84,7 +84,7 @@ class Notifier{
 
 	getSubsFromArtist(artistId){
 		const options = {
-			url: 'http://localhost:8080/api/artists/'+ artistId,
+			url: 'http://localhost:5000/api/artists/'+ artistId,
       		json: true,
       	}
       	return rp.get(options).then((response) => {
@@ -101,7 +101,7 @@ class Notifier{
 
 	deleteSubsFromArtist(artistId){
 		const options = {
-			url: 'http://localhost:8080/api/artists/'+ artistId,
+			url: 'http://localhost:5000/api/artists/'+ artistId,
       		json: true,
       	}
       	return rp.get(options).then((response) => {
@@ -120,7 +120,7 @@ class Notifier{
 
 	notifyUpdateOfArtist(artistId, subject, message){
 		const options = {
-			url: 'http://localhost:8080/api/artists/'+ artistId,
+			url: 'http://localhost:5000/api/artists/'+ artistId,
       		json: true,
       	}
       	return rp.get(options).then((response) => {

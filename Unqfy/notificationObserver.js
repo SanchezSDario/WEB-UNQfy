@@ -76,7 +76,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5001/api/log',
+			uri: 'http://localhost:5002/api/log',
      		body: {
      			text: texto
      		},
@@ -93,7 +93,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'DELETE',
-			uri: 'http://localhost:5000/api/subscriptions/',
+			uri: 'http://localhost:5001/api/subscriptions/',
    			body: { artistId: artist.getId()},
    			json: true,
    		}
@@ -109,7 +109,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5001/api/log',
+			uri: 'http://localhost:5002/api/log',
      		body: {
      			text: texto
      		},
@@ -127,7 +127,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5000/api/notify/',
+			uri: 'http://localhost:5001/api/notify/',
      		body: {
       			artistId: artist.getId(),
       			subject: `Nuevo album para el artista ${artist.getName()}`,
@@ -147,7 +147,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5001/api/log',
+			uri: 'http://localhost:5002/api/log',
      		body: {
      			text: texto
      		},
@@ -165,7 +165,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5001/api/log',
+			uri: 'http://localhost:5002/api/log',
      		body: {
      			text: texto
      		},
@@ -183,7 +183,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5001/api/log',
+			uri: 'http://localhost:5002/api/log',
      		body: {
      			text: texto
      		},
@@ -201,7 +201,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5001/api/log',
+			uri: 'http://localhost:5002/api/log',
      		body: {
      			text: texto
      		},
