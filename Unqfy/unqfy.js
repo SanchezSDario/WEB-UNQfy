@@ -396,6 +396,11 @@ deleteAlbumFromArtist(artist, albumName){
   }
 
   static load(filename) {
+    //const readFileASync = promisify(fs.readFileSync);
+    //return readFileASync(filename, {encoding: 'utf-8'}).then((response) => {
+    //  const classes = [UNQfy, Artist, Album, Track, Playlist, NotificationObserver];
+    //  return picklify.unpicklify(JSON.parse(response), classes);  
+    //})
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     const classes = [UNQfy, Artist, Album, Track, Playlist, NotificationObserver];
     return picklify.unpicklify(JSON.parse(serializedData), classes);

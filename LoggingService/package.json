@@ -4,7 +4,7 @@
   "description": "Logging service for UNQfy",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node loggingRestfullApi.js"
   },
   "author": "",
   "license": "ISC",

@@ -1,6 +1,11 @@
 const picklify = require('picklify');
 const rp = require('request-promise');
 
+//const NOTIFICATION_IP = 172.20.0.22
+//const LOGGING_IP = 172.20.0.23
+const NOTIFICATION_BASEURL = 'http://172.20.0.22:5001/api';
+const LOGGING_BASEURL = 'http://172.20.0.23:5002/api';
+
 class NotificationObserver{
 
 	constructor(){
@@ -76,7 +81,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5002/api/log',
+			uri: LOGGING_BASEURL + '/log',
      		body: {
      			text: texto
      		},
@@ -93,7 +98,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'DELETE',
-			uri: 'http://localhost:5001/api/subscriptions/',
+			uri: NOTIFICATION_BASEURL + '/subscriptions/',
    			body: { artistId: artist.getId()},
    			json: true,
    		}
@@ -109,7 +114,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5002/api/log',
+			uri: LOGGING_BASEURL + '/log',
      		body: {
      			text: texto
      		},
@@ -127,7 +132,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5001/api/notify/',
+			uri: NOTIFICATION_BASEURL + '/notify/',
      		body: {
       			artistId: artist.getId(),
       			subject: `Nuevo album para el artista ${artist.getName()}`,
@@ -147,7 +152,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5002/api/log',
+			uri: LOGGING_BASEURL + '/log',
      		body: {
      			text: texto
      		},
@@ -165,7 +170,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5002/api/log',
+			uri: LOGGING_BASEURL + '/log',
      		body: {
      			text: texto
      		},
@@ -183,7 +188,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5002/api/log',
+			uri: LOGGING_BASEURL + '/log',
      		body: {
      			text: texto
      		},
@@ -201,7 +206,7 @@ class NotificationObserver{
 
 		const options = {
 			method: 'POST',
-			uri: 'http://localhost:5002/api/log',
+			uri: LOGGING_BASEURL + '/log',
      		body: {
      			text: texto
      		},

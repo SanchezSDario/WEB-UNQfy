@@ -8,6 +8,9 @@ let ResourceAlreadyExistsError = require('./notificationApiErrors.js').ResourceA
 let ResourceNotFoundError = require('./notificationApiErrors.js').ResourceNotFoundError;
 let RelatedResourceNotFoundError = require('./notificationApiErrors.js').RelatedResourceNotFoundError;
 
+//const UNQFY_IP = 172.20.0.21;
+const UNQFY_BASEURL = 'http://172.20.0.21:5000/api';
+
 class Notifier{
 
 	/*
@@ -38,7 +41,7 @@ class Notifier{
 
 	addSubToAnArtist(artistId, sub){
 		const options = {
-			url: 'http://localhost:5000/api/artists/'+ artistId,
+			url: UNQFY_BASEURL + '/artists/' + artistId,
       		json: true,
       	}
       	return rp.get(options).then((response) => {
@@ -65,7 +68,7 @@ class Notifier{
 
 	removeSubFromArtist(artistId, sub){
 		const options = {
-			url: 'http://localhost:5000/api/artists/'+ artistId,
+			url: UNQFY_BASEURL + '/artists/' + artistId,
       		json: true,
       	}
       	return rp.get(options).then((response) => {
@@ -84,7 +87,7 @@ class Notifier{
 
 	getSubsFromArtist(artistId){
 		const options = {
-			url: 'http://localhost:5000/api/artists/'+ artistId,
+			url: UNQFY_BASEURL + '/artists/' + artistId,
       		json: true,
       	}
       	return rp.get(options).then((response) => {
@@ -101,7 +104,7 @@ class Notifier{
 
 	deleteSubsFromArtist(artistId){
 		const options = {
-			url: 'http://localhost:5000/api/artists/'+ artistId,
+			url: UNQFY_BASEURL + '/artists/' + artistId,
       		json: true,
       	}
       	return rp.get(options).then((response) => {
@@ -120,7 +123,7 @@ class Notifier{
 
 	notifyUpdateOfArtist(artistId, subject, message){
 		const options = {
-			url: 'http://localhost:5000/api/artists/'+ artistId,
+			url: UNQFY_BASEURL + '/artists/' + artistId,
       		json: true,
       	}
       	return rp.get(options).then((response) => {
